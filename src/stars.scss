@@ -1,0 +1,108 @@
+@use 'sass:string' as *;
+@use 'sass:math' as *;
+html {
+  height: 100%;
+  background: radial-gradient(
+    ellipse at bottom,
+    #1b2735 0%,
+    #090a0f 100%
+  );
+  overflow: hidden;
+  color: #fff;
+}
+
+@function multipleBoxShadow($n,$h) {
+  $value: '#{random(100)}vw #{random($h)}vh';
+  @for $i from 2 through $n {
+    $value: '#{$value} , #{random(100)}vw #{random($h)}vh';
+  }
+  @return unquote($value);
+}
+$shadows-small: multipleBoxShadow(100,300);
+$shadows-medium: multipleBoxShadow(60,200);
+$shadows-big: multipleBoxShadow(30,100);
+
+#stars {
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  //border:solid red 2px;
+  background: transparent;
+  box-shadow: $shadows-small;
+  //animation: stars1 60s 2s ease-in-out infinite alternate;
+  :after {
+    content: ' ';
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    box-shadow: $shadows-small;
+    background: transparent;
+  }
+}
+
+#stars2 {
+  width: 2px;
+  //border:solid red 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: $shadows-medium;
+  //animation: stars2 60s 2s ease-in-out infinite alternate;
+  :after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    box-shadow: $shadows-medium;
+    background: transparent;
+  }
+}
+
+#stars3 {
+  width: 3px;
+  height: 3px;
+  //border:solid red 2px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: $shadows-big;
+  //animation: stars3 60s 2s ease-in-out infinite alternate;
+  :after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    box-shadow: $shadows-big;
+    background: transparent;
+  }
+}
+$h:50;
+@keyframes stars1 {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY((-3vh * $h));
+  }
+}
+@keyframes stars2 {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY((-2vh * $h));
+  }
+}
+@keyframes stars3 {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY((-1vh * $h));
+  }
+}

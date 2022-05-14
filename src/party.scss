@@ -1,0 +1,39 @@
+@use './stars';
+html {
+  box-sizing: border-box;
+}
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+#birthday {
+  display: flex;
+  flex-flow: column nowrap;
+  place-content: center;
+  place-items: center;
+  //border: solid 1px red;
+  min-height: 100vh;
+}
+h1 {
+  display: none;
+  color: #fffb;
+  text-shadow: 0.1em 0.1em 2.5px #f0f, 0.2em 0.2em 2.5px #0ff;
+  animation: hb 2s infinite alternate ease-out;
+  font: clamp(1.4rem, 3.6vw, 3.6rem) 'Rubik Glitch', cursive;
+  line-height: .3em;
+}
+@keyframes hb {
+  to {
+    color: #fff9;
+    text-shadow: -0.08em -0.08em 2.5px #f0fb,
+      -0.08em -0.1em 2.5px #0ffa;
+    letter-spacing: 0.05em;
+    font-size: clamp(1.5rem, 3.8vw, 3.8rem);
+  }
+}
