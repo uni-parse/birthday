@@ -4,23 +4,23 @@ html {
   height: 100%;
   background: radial-gradient(
     ellipse at bottom,
-    #1b2735 0%,
-    #090a0f 100%
+    #213143,
+    #030305
   );
   overflow: hidden;
   color: #fff;
 }
 
-@function multipleBoxShadow($n,$h) {
+@function multipleBoxShadow($n, $h) {
   $value: '#{random(100)}vw #{random($h)}vh';
   @for $i from 2 through $n {
     $value: '#{$value} , #{random(100)}vw #{random($h)}vh';
   }
   @return unquote($value);
 }
-$shadows-small: multipleBoxShadow(100,300);
-$shadows-medium: multipleBoxShadow(60,200);
-$shadows-big: multipleBoxShadow(30,100);
+$shadows-small: multipleBoxShadow(300, 300);
+$shadows-medium: multipleBoxShadow(100, 200);
+$shadows-big: multipleBoxShadow(20, 100);
 
 #stars {
   width: 1px;
@@ -81,7 +81,7 @@ $shadows-big: multipleBoxShadow(30,100);
     background: transparent;
   }
 }
-$h:50;
+$h: 50;
 @keyframes stars1 {
   from {
     transform: translateY(0);
