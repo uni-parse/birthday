@@ -8,9 +8,11 @@ html {
   box-sizing: inherit;
 }
 html,
-body {
+body,
+div {
   margin: 0;
   padding: 0;
+  border: none;
 }
 body {
   color: #fff;
@@ -25,8 +27,8 @@ body {
   flex-flow: column nowrap;
   place-content: center;
   place-items: center;
-  //border: solid 1px red;
-  min-height: 100vh;
+  //border: solid 1px red;  min-height:100vh;
+  min-height: 99vh;
 }
 h1 {
   display: none;
