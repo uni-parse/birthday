@@ -1,15 +1,6 @@
 @use 'sass:string' as *;
 @use 'sass:math' as *;
-html {
-  height: 100%;
-  background: radial-gradient(
-    ellipse at bottom,
-    #213143,
-    #030305
-  );
-  overflow: hidden;
-  color: #fff;
-}
+
 
 @function multipleBoxShadow($n, $h) {
   $value: '#{random(100)}vw #{random($h)}vh';
