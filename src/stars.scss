@@ -1,7 +1,6 @@
 @use 'sass:string' as *;
 @use 'sass:math' as *;
 
-
 @function multipleBoxShadow($n, $h) {
   $value: '#{random(100)}vw #{random($h)}vh';
   @for $i from 2 through $n {
@@ -9,9 +8,10 @@
   }
   @return unquote($value);
 }
-$shadows-small: multipleBoxShadow(300, 300);
-$shadows-medium: multipleBoxShadow(100, 200);
-$shadows-big: multipleBoxShadow(20, 100);
+$h: 50;
+$shadows-small: multipleBoxShadow(600, (100 + 3 * $h));
+$shadows-medium: multipleBoxShadow(200, (100 + 2 * $h));
+$shadows-big: multipleBoxShadow(20, (100 + $h));
 
 #stars {
   width: 1px;
@@ -72,7 +72,7 @@ $shadows-big: multipleBoxShadow(20, 100);
     background: transparent;
   }
 }
-$h: 50;
+
 @keyframes stars1 {
   from {
     transform: translateY(0);

@@ -37,7 +37,7 @@ document.body.addEventListener('click', e => {
   h1[0].style.display = 'inline-block'
   h1[1].style.display = 'inline-block'
   for (let i = 0; i < 3; i++) {
-    stars[i].style.animation = `stars${i + 1} 60s 2s ease-in-out infinite alternate`
+    stars[i].style.animation = `stars${i + 1} 60s 1s ease-in-out infinite alternate`
   }
 })
 document.body.addEventListener('click', e => party.confetti(h1[1], { count: party.variation.range(10, 20) }), { once: true })
