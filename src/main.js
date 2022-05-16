@@ -1,7 +1,5 @@
 //import './party'
 import './party.scss'
-
-
 import mp3 from './assets/m.mp3'
 
 const div = document.querySelector('#birthday')
