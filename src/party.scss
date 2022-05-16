@@ -53,8 +53,8 @@ h1 {
   line-height: 0.3em;
   cursor: pointer;
   &::selection {
-    background-color: transparent !important;
-    color: rgba(255, 0, 0, 0.685) !important;
+    background-color: transparent;
+    color: rgba(255, 0, 0, 0.685)
   }
   &:hover {
     font-weight: 900;
