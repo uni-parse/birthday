@@ -80,12 +80,19 @@ dialog {
   text-align: center;
   border: double;
   details {
-    summary:focus-visible {
-      outline: none;
-      border: dotted 1.5px;
-      border-radius: 0.3em 0.3em 1em 1em;
-      padding: 0.3em;
+    summary {
+      cursor: pointer;
+      &:focus-visible {
+        outline: none;
+        border: dotted 1.5px;
+        border-radius: 0.3em 0.3em 1em 1em;
+        padding: 0.3em;
+      }
     }
+  }
+  em {
+    font-weight: bold;
+    text-transform: capitalize;
   }
   select,
   input,
