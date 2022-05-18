@@ -81,8 +81,8 @@ dialog {
   details{
     summary:focus-visible{
       outline: dotted 2px;
-      border-radius: .5em .5em 40% 40%/.5em .5em 70% 70%;
-      padding: .3em 0;
+      border-radius: .3em .3em 1em 1em;
+      padding: .3em;
     }
   }
   select,
