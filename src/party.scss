@@ -74,10 +74,17 @@ h1 {
   }
 }
 dialog {
-  background: red linear-gradient(#327272, #5c185c);
+  background: red linear-gradient(#083f5f, #571557 70%);
   border-radius: 30% 30% 10% 10%/50% 50% 10% 10%;
   text-align: center;
   border: double;
+  details{
+    summary:focus-visible{
+      outline: dotted 2px;
+      border-radius: .5em .5em 40% 40%/.5em .5em 70% 70%;
+      padding: .3em 0;
+    }
+  }
   select,
   input,
   button {
