@@ -66,23 +66,24 @@ h1 {
 @keyframes hb {
   to {
     color: #fff9;
-    text-shadow: -0.08em -0.08em 2.5px #f0fb,
-      -0.12em -0.12em 2.5px #0ffa;
+    text-shadow: -0.1em -0.1em 2.5px #f0fb,
+      -0.17em -0.17em 2.5px #0ffa;
     letter-spacing: 0.05em;
     font-size: clamp(1.5rem, 3.8vw, 3.8rem);
     transform: rotate(-3deg);
   }
 }
 dialog {
+  color: #fff;
   background: red linear-gradient(#083f5f, #571557 70%);
   border-radius: 30% 30% 10% 10%/50% 50% 10% 10%;
   text-align: center;
   border: double;
-  details{
-    summary:focus-visible{
+  details {
+    summary:focus-visible {
       outline: dotted 2px;
-      border-radius: .3em .3em 1em 1em;
-      padding: .3em;
+      border-radius: 0.3em 0.3em 1em 1em;
+      padding: 0.3em;
     }
   }
   select,
