@@ -1,11 +1,11 @@
 import './party.scss'
-import audioParty from './assets/m.mp3'
+import audioBirthday from './assets/birthday.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks.wav'
-import audioIntro from './assets/intro++.mp3'
+import audioFireworks from './assets/fireworks0.wav'
+import audioIntro from './assets/intro.mp3'
 
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
@@ -16,7 +16,7 @@ birthday.innerHTML = `
   <audio src=${audioFalse} preload=auto></audio>
   <audio src=${audioSuccess} preload=auto></audio>
   <audio src=${audioFireworks} preload=auto></audio>
-  <audio src=${audioParty} preload=auto loop></audio>
+  <audio src=${audioBirthday} preload=auto loop></audio>
   <audio src=${audioIntro} preload=auto loop></audio>
 `
 const h1 = document.querySelectorAll('h1')
