@@ -4,8 +4,9 @@ import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks0.wav'
+import audioFireworks from './assets/fireworks.wav'
 import audioIntro from './assets/intro.mp3'
+import audioBoom from './assets/boom.wav'
 
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
@@ -18,6 +19,7 @@ birthday.innerHTML = `
   <audio src=${audioFireworks} preload=auto></audio>
   <audio src=${audioBirthday} preload=auto loop></audio>
   <audio src=${audioIntro} preload=auto loop></audio>
+  <audio src=${audioBoom} preload=auto></audio>
 `
 const h1 = document.querySelectorAll('h1')
 const audio = document.querySelectorAll('audio')
@@ -35,6 +37,7 @@ function fun() {
     e.stopPropagation()
     audio[6].pause()
     audio[6].currentTime = 0
+    audio[7].play()
     audio[5].play()
     party.confetti(h1[1], { count: party.variation.range(9, 20) })
     h1[0].innerText = 'Happy Birthday'
