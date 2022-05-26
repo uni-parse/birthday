@@ -15,7 +15,7 @@ birthday.innerHTML = `
   <audio src=${audioTrue} preload=auto></audio>
   <audio src=${audioFalse} preload=auto></audio>
   <audio src=${audioSuccess} preload=auto></audio>
-  <audio src=${audioFireworks}c preload=auto></audio>
+  <audio src=${audioFireworks} preload=auto></audio>
   <audio src=${audioParty} preload=auto loop></audio>
   <audio src=${audioIntro} preload=auto loop></audio>
 `
