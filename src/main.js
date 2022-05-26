@@ -5,6 +5,8 @@ import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
 import audioFireworks from './assets/fireworks1.wav'
+import audioIntro from './assets/mixkit-cat-walk-371.mp3'
+//'./assets/intro.mp3'
 
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
@@ -14,8 +16,9 @@ birthday.innerHTML = `
   <audio src=${audioTrue} preload=auto></audio>
   <audio src=${audioFalse} preload=auto></audio>
   <audio src=${audioSuccess} preload=auto></audio>
-  <audio src=${audioFireworks} preload=auto></audio>
+  <audio src=${audioFireworks}c preload=auto></audio>
   <audio src=${audioParty} preload=auto loop></audio>
+  <audio src=${audioIntro} preload=auto loop></audio>
 `
 const h1 = document.querySelectorAll('h1')
 const audio = document.querySelectorAll('audio')
@@ -31,6 +34,8 @@ function fun() {
   h1[1].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   birthday.addEventListener('click', e => {
     e.stopPropagation()
+    audio[6].pause()
+    audio[6].currentTime = 0
     audio[5].play()
     party.confetti(h1[1], { count: party.variation.range(9, 20) })
     h1[0].innerText = 'Happy Birthday'
@@ -53,8 +58,9 @@ function fun() {
 
 if (typeof dialog.showModal === "function") {
   document.addEventListener('DOMContentLoaded', () => {
-    dialog.showModal();
+    dialog.showModal()
     dialog.addEventListener('click', () => audio[0].play())
+    dialog.addEventListener('click', () => audio[6].play(), { once: true })
     select.addEventListener('change', () => {
       if (date.value == '2000-01-15' && select.value == 2014) {
         audio[3].play()
