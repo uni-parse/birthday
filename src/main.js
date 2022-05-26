@@ -60,6 +60,8 @@ if (typeof dialog.showModal === "function") {
         audio[3].play()
         select.disabled = true
         btn.disabled = false
+        btn.innerText = 'Unlocked'
+        btn.setAttribute('data-lock', '🔑')
         output[0].style.color = 'greenyellow'
         output[0].innerHTML = 'Yes😁 <b>2014 ✓</b>\nit\'s was awesome 8 years of <b>friendship</b>!!'
       } else if (select.value == 2014) {
@@ -78,6 +80,8 @@ if (typeof dialog.showModal === "function") {
         audio[3].play()
         date.disabled = true
         btn.disabled = false
+        btn.innerText = 'Unlocked'
+        btn.setAttribute('data-lock', '🔑')
         output[1].style.color = 'greenyellow'
         output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b> !!<br>you\'re younger than me by <b>135</b> day!!'
       } else if (date.value == '2000-01-15') {

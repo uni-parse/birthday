@@ -120,6 +120,9 @@ dialog {
   }
   button {
     margin-top: 1em;
+    &::before,&::after{
+      content:attr(data-lock);
+    }
   }
   output span {
     font-weight: bold;
