@@ -56,7 +56,7 @@ h1 {
   color: #fffc;
   text-shadow: $offset1 $offset1 $blur $c1,
     $offset2 $offset2 $blur $c2;
-  font: 500 clamp(1.8rem, 4.5vw, 4.5rem) Gluten, cursive;
+  font: 500 clamp(1.6rem, 4vw, 4rem) Gluten, cursive;
   line-height: 0.3em;
   cursor: pointer;
   &::selection {
@@ -75,8 +75,7 @@ h1 {
     opacity: 0.7;
     text-shadow: $offset-1 $offset-1 $blur $c1,
       $offset-2 $offset-2 $blur $c2;
-    font-size: clamp(2rem, 5vw, 5rem);
-    transform: rotate(-5deg);
+    transform: rotate(-5deg) scale(1.25);
   }
 }
 dialog {
