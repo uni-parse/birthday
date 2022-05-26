@@ -69,6 +69,20 @@ h1 {
   &:active {
     cursor: grabbing;
   }
+  &:first-of-type {
+    &::before,
+    &::after {
+      content: attr(data-content);
+    }
+  }
+  &:last-of-type {
+    &::before {
+      content: attr(data-contentBefore);
+    }
+    &::after {
+      content: attr(data-contentAfter);
+    }
+  }
 }
 @keyframes hb {
   to {
@@ -107,9 +121,23 @@ dialog {
   button {
     margin-top: 1em;
   }
+  output span {
+    font-weight: bold;
+    &:nth-child(1) {
+      color: greenyellow;
+    }
+    &:nth-child(2) {
+      color: red;
+      text-decoration: {
+        line: underline;
+        color: red;
+        style: wavy;
+      }
+    }
+  }
   ::selection {
     background: transparent;
-    color: rgb(#0667e6, 0.685);
+    color: #e0dd0c;
   }
   //&::backdrop {
   //
