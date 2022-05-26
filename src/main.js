@@ -1,4 +1,3 @@
-//import './party.js'
 import './party.scss'
 import audioParty from './assets/m.mp3'
 import audioClick from './assets/click.wav'
@@ -21,6 +20,12 @@ birthday.innerHTML = `
 const h1 = document.querySelectorAll('h1')
 const audio = document.querySelectorAll('audio')
 const stars = document.querySelectorAll('#stars,#stars2,#stars3')
+const dialog = document.querySelector('dialog')
+const select = document.querySelector('select')
+const date = document.querySelector('input[type=date]')
+const output = document.querySelectorAll('output')
+const btn = document.querySelector('button')
+
 function fun() {
   h1[0].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   h1[1].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -42,33 +47,9 @@ function fun() {
     })
   })
 }
-const dialog = document.querySelector('dialog')
 
-if (typeof dialog.showModal !== 'function') {
-  dialog.hidden = true;
-  let access = prompt('😎Hi mechid✨, We\'ve create for u a Gift🎁\nbut first, u need to answer the question:\nwich year our first meeting?', '')
-
-  if (access == '2014') {
-    alert('Yes😁 2014!!\nit\'s was awesome 8 years of friendship!!')
-  } else if (access.startsWith('201')) {
-    alert(`Nooo😅 we meet on 2014 not "${access}"!!\nit\'s was awesome 8 years of friendship!!`)
-  } else if (!(access.startsWith('201'))) {
-    while (!(access.startsWith('201'))) {
-      access = prompt(`⚠️warning "${access}" not a number!!\n💡 our first meeting year was:    201#`, '')
-    } if (access == '2014') {
-      alert('Yes😁 2014!!\nit\'s was awesome 8 years of friendship!!')
-    } else if (access.startsWith('201')) {
-      alert(`Nooo😅 we meet on 2014 not "${access}"!!\nit\'s was awesome 8 years of friendship!!`)
-    }
-  }
-  fun()
-}
-const select = document.querySelector('select')
-const date = document.querySelector('input[type=date]')
-const output = document.querySelectorAll('output')
-const btn = document.querySelector('button')
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof dialog.showModal === "function") {
+if (typeof dialog.showModal === "function") {
+  document.addEventListener('DOMContentLoaded', () => {
     dialog.showModal();
     dialog.addEventListener('click', () => audio[0].play())
     select.addEventListener('change', () => {
@@ -108,6 +89,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
     dialog.addEventListener('close', () => fun(), { once: true })
+  })
+} else {
+  dialog.hidden = true;
+  let access = prompt('😎Hi mechid✨, We\'ve create for u a Gift🎁\nbut first, u need to answer the question:\nwich year our first meeting?', '')
+  if (access == '2014') {
+    alert('Yes😁 2014!!\nit\'s was awesome 8 years of friendship!!')
+  } else if (access.startsWith('201')) {
+    alert(`Nooo😅 we meet on 2014 not "${access}"!!\nit\'s was awesome 8 years of friendship!!`)
+  } else if (!(access.startsWith('201'))) {
+    while (!(access.startsWith('201'))) {
+      access = prompt(`⚠️warning "${access}" not a number!!\n💡 our first meeting year was:    201#`, '')
+    } if (access == '2014') {
+      alert('Yes😁 2014!!\nit\'s was awesome 8 years of friendship!!')
+    } else if (access.startsWith('201')) {
+      alert(`Nooo😅 we meet on 2014 not "${access}"!!\nit\'s was awesome 8 years of friendship!!`)
+    }
   }
-})
+  fun()
+}
 //alert('done')
