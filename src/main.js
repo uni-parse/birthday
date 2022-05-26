@@ -4,9 +4,8 @@ import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks1.wav'
-import audioIntro from './assets/mixkit-cat-walk-371.mp3'
-//'./assets/intro.mp3'
+import audioFireworks from './assets/fireworks0.wav'
+import audioIntro from './assets/intro++.mp3'
 
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
