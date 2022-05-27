@@ -1,4 +1,5 @@
-import './party.scss'
+import './sass/main.scss'
+import mediaIcons from './mediaIcons'
 import audioBirthday from './assets/birthday.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
@@ -7,6 +8,7 @@ import audioSuccess from './assets/success.wav'
 import audioFireworks from './assets/fireworks.wav'
 import audioIntro from './assets/intro.mp3'
 import audioBoom from './assets/boom.wav'
+
 
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
@@ -21,6 +23,7 @@ birthday.innerHTML = `
   <audio src=${audioIntro} preload=auto loop></audio>
   <audio src=${audioBoom} preload=auto></audio>
 `
+
 const h1 = document.querySelectorAll('h1')
 const audio = document.querySelectorAll('audio')
 const stars = document.querySelectorAll('#stars,#stars2,#stars3')
@@ -29,6 +32,26 @@ const select = document.querySelector('select')
 const date = document.querySelector('input[type=date]')
 const output = document.querySelectorAll('output')
 const btn = document.querySelector('button')
+const link = document.createElement('a')
+const address = document.querySelector('address')
+const medias = [
+  ['https://facebook.com/UniParse', mediaIcons.facebook],
+  ['https://twitter.com/UniParse', mediaIcons.twitter],
+  ['https://instagram.com/uniparse', mediaIcons.instagram],
+  ['https://github.com/TheUniParse', mediaIcons.github],
+  //[],
+  //[],
+  //[],
+  //[],
+  //[],
+  //[]
+]
+link.setAttribute('target', '_blank')
+for (const media of medias) {
+  link.setAttribute('href', media[0])
+  link.innerHTML = media[1]
+  address.appendChild(link.cloneNode(true))
+}
 
 function fun() {
   h1[0].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -72,16 +95,16 @@ if (typeof dialog.showModal === "function") {
         btn.innerText = 'Unlocked'
         btn.setAttribute('data-lock', '🔑')
         output[0].style.color = 'greenyellow'
-        output[0].innerHTML = 'Yes😁 <b>2014 ✓</b>\nit\'s was awesome 8 years of <b>friendship</b>!!'
+        output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
       } else if (select.value == 2014) {
         audio[1].play()
         select.disabled = true
         output[0].style.color = 'greenyellow'
-        output[0].innerHTML = 'Yes😁 <b>2014 ✓</b>\nit\'s was awesome 8 years of <b>friendship</b>!!'
+        output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
       } else {
         audio[2].play()
         output[0].style.color = 'darkorange'
-        output[0].innerHTML = `Nooo😅 we meet on <span>2014 ✓</span> not <span>${select.value}✗</span> !!`
+        output[0].innerHTML = `Nooo😅 we meet on <span>2014 ✓</span><br>not <span>${select.value}✗</span> !!`
       }
     })
     date.addEventListener('change', () => {
@@ -101,7 +124,7 @@ if (typeof dialog.showModal === "function") {
       } else {
         audio[2].play()
         output[1].style.color = 'darkorange'
-        output[1].innerHTML = `Nooo😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> not <span>${date.value}✗</span> !!`
+        output[1].innerHTML = `Nooo😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
       }
     })
     dialog.addEventListener('close', () => fun(), { once: true })

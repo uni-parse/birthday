@@ -1,0 +1,10 @@
+@use 'utilities' as *;
+address {
+  display: flex;
+  border: solid red;
+  flex-flow: row wrap;
+  svg {
+    //@include size(50px);
+    flex:auto;
+  }
+}

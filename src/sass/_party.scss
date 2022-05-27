@@ -1,0 +1,62 @@
+@use './stars';
+@use 'sass:color';
+
+#birthday {
+  display: flex;
+  flex-flow: column nowrap;
+  place-content: center;
+  place-items: center;
+  min-height: calc(100vh - 6px);
+  //border: solid 1px red;  min-height:100vh;
+}
+//text-shadow
+$offset-1: 0.045em;
+$offset-2: 0.08em;
+$offset1: -0.045em;
+$offset2: -0.08em;
+$blur: 1.5px;
+$c1: color.adjust(#f0f, $lightness: 6%, $hue: 25);
+$c2: color.adjust(#0ff, $hue: 20);
+h1 {
+  opacity: 1;
+  display: inline-block;
+  z-index: 1;
+  color: #fffc;
+  text-shadow: $offset1 $offset1 $blur $c1,
+    $offset2 $offset2 $blur $c2;
+  font: 500 clamp(1.6rem, 4vw, 4rem) 'Henny Penny', cursive;
+  line-height: 0.3em;
+  cursor: pointer;
+  &::selection {
+    background-color: transparent;
+    color: rgb(#aa2764, 0.685);
+  }
+  &:hover {
+    font-weight: 900;
+  }
+  &:active {
+    cursor: grabbing;
+  }
+  &:first-of-type {
+    &::before,
+    &::after {
+      content: attr(data-content);
+    }
+  }
+  &:last-of-type {
+    &::before {
+      content: attr(data-contentBefore);
+    }
+    &::after {
+      content: attr(data-contentAfter);
+    }
+  }
+}
+@keyframes hb {
+  to {
+    opacity: 0.7;
+    text-shadow: $offset-1 $offset-1 $blur $c1,
+      $offset-2 $offset-2 $blur $c2;
+    transform: rotate(-5deg) scale(1.25);
+  }
+}

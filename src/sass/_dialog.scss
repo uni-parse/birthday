@@ -1,0 +1,54 @@
+dialog {
+  color: #fff;
+  background: red linear-gradient(#083f5f, #571557 70%);
+  border-radius: 30% 30% 3em 3em/50% 50% 3em 3em;
+  text-align: center;
+  border: double;
+  details {
+    summary {
+      cursor: pointer;
+      &:focus-visible {
+        outline: none;
+        border: dotted 1.5px;
+        border-radius: 0.3em 0.3em 1em 1em;
+        padding: 0.3em;
+      }
+    }
+  }
+  em {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  select,
+  input,
+  button {
+    border-radius: 20%;
+  }
+  button {
+    margin-top: 1em;
+    &::before,&::after{
+      content:attr(data-lock);
+    }
+  }
+  output span {
+    font-weight: bold;
+    &:nth-of-type(1) {
+      color: greenyellow;
+    }
+    &:nth-of-type(2) {
+      color: red;
+      text-decoration: {
+        line: underline;
+        color: red;
+        style: wavy;
+      }
+    }
+  }
+  ::selection {
+    background: transparent;
+    color: #e0dd0c;
+  }
+  //&::backdrop {
+  //
+  //}
+}
