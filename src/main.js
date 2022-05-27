@@ -59,7 +59,8 @@ function fun() {
 }
 
 if (typeof dialog.showModal === "function") {
-  document.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('load', () => {
+    console.log('loaded')
     dialog.showModal()
     dialog.addEventListener('click', () => audio[0].play())
     dialog.addEventListener('click', () => audio[6].play(), { once: true })
