@@ -48,7 +48,7 @@ dialog {
     background: transparent;
     color: #e0dd0c;
   }
-  //&::backdrop {
-  //
-  //}
+  &::backdrop {
+   cursor: not-allowed;
+  }
 }

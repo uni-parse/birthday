@@ -1,5 +1,7 @@
+// ★▶►▬•»›▲♥⚠️💡±×÷²√π⁰≠≈≤≥Ø∞✓✗✖ € ← → ↑ ↓ ⇆♪©Ⓓ†₱…
 import './sass/main.scss'
-import mediaIcons from './mediaIcons'
+import './mediaIcons'
+import showMedias from './mediaIcons'
 import audioBirthday from './assets/birthday.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
@@ -13,7 +15,7 @@ import audioBoom from './assets/boom.wav'
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
   <h1></h1>
-  <h1>›_~</h1>
+  <h1>${spanLetters('loading…')}</h1>
   <audio src=${audioClick} preload=auto></audio>
   <audio src=${audioTrue} preload=auto></audio>
   <audio src=${audioFalse} preload=auto></audio>
@@ -23,37 +25,30 @@ birthday.innerHTML = `
   <audio src=${audioIntro} preload=auto loop></audio>
   <audio src=${audioBoom} preload=auto></audio>
 `
+const h1 = document.querySelectorAll('h1'),
+  audio = document.querySelectorAll('audio'),
+  stars = document.querySelectorAll('#stars1,#stars2,#stars3'),
+  dialog = document.querySelector('dialog'),
+  select = document.querySelector('select'),
+  date = document.querySelector('input[type=date]'),
+  output = document.querySelectorAll('output'),
+  btn = document.querySelector('button')
 
-const h1 = document.querySelectorAll('h1')
-const audio = document.querySelectorAll('audio')
-const stars = document.querySelectorAll('#stars,#stars2,#stars3')
-const dialog = document.querySelector('dialog')
-const select = document.querySelector('select')
-const date = document.querySelector('input[type=date]')
-const output = document.querySelectorAll('output')
-const btn = document.querySelector('button')
-const link = document.createElement('a')
-const address = document.querySelector('address')
-const medias = [
-  ['https://facebook.com/UniParse', mediaIcons.facebook],
-  ['https://twitter.com/UniParse', mediaIcons.twitter],
-  ['https://instagram.com/uniparse', mediaIcons.instagram],
-  ['https://github.com/TheUniParse', mediaIcons.github],
-  //[],
-  //[],
-  //[],
-  //[],
-  //[],
-  //[]
-]
-link.setAttribute('target', '_blank')
-for (const media of medias) {
-  link.setAttribute('href', media[0])
-  link.innerHTML = media[1]
-  address.appendChild(link.cloneNode(true))
+
+function spanLetters(str) {
+  let span = ''
+  for (let i = 0; str.length > i; i++) {
+    if (str[i] !== ' ') {
+      span += `<span>${str[i]}</span>`
+    } else {
+      span += ' '
+    }
+  }
+  return span
 }
 
 function fun() {
+  h1[1].innerHTML = spanLetters('›_~')
   h1[0].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   h1[1].style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   birthday.addEventListener('click', e => {
@@ -62,15 +57,18 @@ function fun() {
     audio[6].currentTime = 0
     audio[7].play()
     audio[5].play()
-    party.confetti(h1[1], { count: party.variation.range(9, 20) })
-    h1[0].innerText = 'Happy Birthday'
+    party.confetti(h1[1], { count: party.variation.range(34, 35) })
+    h1[0].innerHTML = spanLetters('Happy Birthday')
     h1[0].setAttribute('data-content', '🎊')
-    h1[1].innerText = 'Mechid'
+    h1[1].innerHTML = spanLetters('Mechid')
     h1[1].setAttribute('data-contentBefore', '🎉')
     h1[1].setAttribute('data-contentAfter', '🥳')
-    for (let i = 0; i < 3; i++) {
-      stars[i].style.animation = `stars${i + 1} 60s 1s ease-in-out infinite alternate`
-    }
+    setTimeout(() => {
+      for (let i = 0; i < 3; i++) {
+        stars[i].style.animation = `stars${i + 1} 60s ease-in-out infinite alternate`
+      }
+    }, 1000)
+    setTimeout(() => showMedias(audio), 10000)
   }, { once: true })
   document.addEventListener('click', e => {
     audio[4].play()
@@ -125,6 +123,7 @@ if (typeof dialog.showModal === "function") {
         audio[2].play()
         output[1].style.color = 'darkorange'
         output[1].innerHTML = `Nooo😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
+        date.value = '2000-01-29'
       }
     })
     dialog.addEventListener('close', () => fun(), { once: true })

@@ -6,7 +6,8 @@
   flex-flow: column nowrap;
   place-content: center;
   place-items: center;
-  min-height: calc(100vh - 6px);
+  min-height: 100vh;
+  overflow: hidden;
   //border: solid 1px red;  min-height:100vh;
 }
 //text-shadow
@@ -24,16 +25,28 @@ h1 {
   color: #fffc;
   text-shadow: $offset1 $offset1 $blur $c1,
     $offset2 $offset2 $blur $c2;
-  font: 500 clamp(1.6rem, 4vw, 4rem) 'Henny Penny', cursive;
+  transition: all 0.5s;
+  font: 500 clamp(1.4rem, 8vw, 4rem) 'Henny Penny', cursive;
   line-height: 0.3em;
   cursor: pointer;
   &::selection {
     background-color: transparent;
     color: rgb(#aa2764, 0.685);
   }
-  &:hover {
-    font-weight: 900;
+  span {
+    transition: font-size .8s,color .8s;
+    &:nth-child(2n):hover {
+      //font-weight: 900;
+      font-size: 1.2em;
+      color: $c1;
+    }
+    &:nth-child(2n + 1):hover {
+      //font-weight: 900;
+      font-size: 1.2em;
+      color: $c2;
+    }
   }
+
   &:active {
     cursor: grabbing;
   }
