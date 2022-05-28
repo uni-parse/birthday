@@ -29,9 +29,9 @@ h1 {
   font: 500 clamp(1.4rem, 8vw, 4rem) 'Henny Penny', cursive;
   line-height: 0.3em;
   cursor: pointer;
-  &::selection {
+  ::selection {
     background-color: transparent;
-    color: rgb(#aa2764, 0.685);
+    color: #e0dd0c;
   }
   span {
     transition: font-size .8s,color .8s;

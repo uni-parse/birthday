@@ -1,5 +1,4 @@
 import srcset from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
-console.log(srcset);
 const a = document.createElement('a'),
   img = document.createElement('img'),
   address = document.querySelector('address'),
