@@ -113,12 +113,12 @@ if (typeof dialog.showModal === "function") {
         btn.innerText = 'Unlocked'
         btn.setAttribute('data-lock', '🔑')
         output[1].style.color = 'greenyellow'
-        output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b> !!<br>you\'re younger than me by <b>135</b> day!!'
+        output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
       } else if (date.value == '2000-01-15') {
         audio[1].play()
         date.disabled = true
         output[1].style.color = 'greenyellow'
-        output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b> !!<br>you\'re younger than me by <b>135</b> day!!'
+        output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
       } else {
         audio[2].play()
         output[1].style.color = 'darkorange'
