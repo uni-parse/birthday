@@ -1,7 +1,7 @@
-import srcset from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
+import srcset1 from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
+import srcset2 from './assets/mechid.jpg?w=66&format=avif;webp&srcset'
 const a = document.createElement('a'),
-  img = document.createElement('img'),
-  address = document.querySelector('address'),
+  address = document.querySelectorAll('address'),
   icon = {
     github: `
   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -47,43 +47,70 @@ const a = document.createElement('a'),
   `
   }
 const medias = [
-  ['https://youtube.com/channel/UCvNOch5x46MDaejgQ6SkzUg', icon.youtube],
-  ['https://facebook.com/UniParse', icon.facebook],
-  ['https://instagram.com/uniparse', icon.instagram],
-  ['https://linkedin.com/in/uniparse', icon.linkedin],
-  ['https://github.com/TheUniParse', icon.github],
-  ['https://twitter.com/UniParse', icon.twitter],
+  [
+    ['https://youtube.com/channel/UCvNOch5x46MDaejgQ6SkzUg', icon.youtube],
+    ['https://facebook.com/UniParse/', icon.facebook],
+    ['https://instagram.com/uniparse/', icon.instagram],
+    ['https://linkedin.com/in/uniparse', icon.linkedin],
+    ['https://github.com/TheUniParse', icon.github],
+    ['https://twitter.com/UniParse', icon.twitter],
+  ], [
+    ['https://facebook.com/got.em.11/', icon.facebook],
+    ['https://instagram.com/mohamed_mchid_hedjala/', icon.instagram],
+    ['https://twitter.com/mohamedmh06', icon.twitter],
+  ]
 ]
-
 a.setAttribute('target', '_blank')
+let i = 0
 for (const media of medias) {
-  a.setAttribute('href', media[0])
-  a.innerHTML = media[1]
-  address.appendChild(a.cloneNode(true))
+  for (const _ of media) {
+    a.setAttribute('href', _[0])
+    a.innerHTML = _[1]
+    address[i].appendChild(a.cloneNode(true))
+  }
+  i++
 }
-img.srcset = srcset
-img.setAttribute('alt', 'UniParse')
-address.appendChild(img)
-const svgs = document.querySelectorAll('svg')
-for (let i = 0; i < svgs.length; i++) {
-  svgs[i].style.transition = `all 500ms cubic-bezier(0.215, 0.61, 0.355, 1), right ${(svgs.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4)`
+const imgs = [
+  document.createElement('img'),
+  document.createElement('img')
+]
+i = 0
+for (const _ of [[srcset1, 'uniparse'], [srcset2, 'mechid']]) {
+  imgs[i].srcset = _[0]
+  imgs[i].setAttribute('alt', _[1])
+  address[i].appendChild(imgs[i])
+  i++
 }
+
+const svgs = []
+for (const _ of address) {
+  svgs.push(_.querySelectorAll('svg'))
+}
+for (const svg of svgs) {
+  for (let i = 0; i < svg.length; i++) {
+    svg[i].style.transition = `all 500ms cubic-bezier(0.215, 0.61, 0.355, 1), right ${(svg.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4), left ${(svg.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4)`
+  }
+}
+
 function showMedias(audio) {
-  let show = false
-  let count = 0
-  img.style.bottom = '.3rem'
-  img.addEventListener('click', e => {
-    //e.stopPropagation()
-    audio[0].play()
-    show = !show
-    for (const svg of svgs) {
-      if (show == true) {
-        svg.style.right = '2.8rem'
+  let toggle = [false, false]
+  const offsetX = ['right', 'left']
+  for (let i = 0; i < imgs.length; i++) {
+    imgs[i].style.bottom = '.3rem'
+    imgs[i].addEventListener('click', () => {
+      audio[0].play()
+      toggle[i] = !toggle[i]
+      if (toggle[i] == true) {
+        for (const svg of svgs[i]) {
+          svg.style[offsetX[i]] = '2.8rem'
+        }
       } else {
-        svg.style.right = 0
+        for (const svg of svgs[i]) {
+          svg.style[offsetX[i]] = 0
+        }
       }
-    }
-  })
+    })
+  }
 }
 
 
