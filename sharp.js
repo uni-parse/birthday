@@ -1,5 +1,5 @@
 const sharp = require('sharp')
-sharp('src/assets/gaara.png')
+sharp('src/assets/purpleBorderEffect.webp')
   // .resize(
   //   200,//width
   //   200,//height
@@ -17,13 +17,13 @@ sharp('src/assets/gaara.png')
   //   right: 10,
   //   background: { r: 0, g: 0, b: 0, alpha: .5 }
   // })
-  // .extract({ //crop
-  //   left:   25,//push from right
-  //   top:    0,// push from bottom
-  //   width:  503,
-  //   height: 503
-  // })
-  //.trim(90) //crop img by border?margin width10Ⓓ
+  .extract({ //crop
+    left: 40,//push from right
+    top: 40,// push from bottom
+    width: 1200 - 80,
+    height: 1200 -105
+  })
+  //.trim(30) //crop img by border?margin width10Ⓓ
 
   .jpeg({
     quality: 50, //80d 0~100
@@ -56,7 +56,7 @@ sharp('src/assets/gaara.png')
   })
   .webp({
     quality: 50, //80d
-    alphaQuality: 50, //0~100d
+    alphaQuality: 80, //0~100d
     lossless: false, //falseⒹ
     nearLossless: false, //falseⒹ
     smartSubsample: false, //falseⒹ high quality chroma
@@ -66,22 +66,22 @@ sharp('src/assets/gaara.png')
     force: true //trueⒹ format
   })
 
-//  .extend({ left: 553, right: 553, top: 816, bottom: 816 , background: {r:0,g:0,b:0,alpha:0}})
-//   .composite([ //sprite
-//     {
-//       input: 'src/assets/_red.png',
-//       gravity: 'east' //position side(north|east|south|west|centreⒹ) corner(northwest|...)
-//     }, {
-//       input: 'src/assets/_magenta.png',
-//       gravity: 'west'
-//     }, {
-//       input: 'src/assets/_green.png',
-//       gravity: 'northwest'
-//     }, {
-//       input: 'src/assets/_cyan.png',
-//       gravity: 'south'
-//     },
-//   ])
+  //  .extend({ left: 553, right: 553, top: 816, bottom: 816 , background: {r:0,g:0,b:0,alpha:0}})
+  //   .composite([ //sprite
+  //     {
+  //       input: 'src/assets/_red.png',
+  //       gravity: 'east' //position side(north|east|south|west|centreⒹ) corner(northwest|...)
+  //     }, {
+  //       input: 'src/assets/_magenta.png',
+  //       gravity: 'west'
+  //     }, {
+  //       input: 'src/assets/_green.png',
+  //       gravity: 'northwest'
+  //     }, {
+  //       input: 'src/assets/_cyan.png',
+  //       gravity: 'south'
+  //     },
+  //   ])
 
 
   //.rotate(180)
@@ -94,12 +94,12 @@ sharp('src/assets/gaara.png')
   //.normalise()
   //.clahe({ width: 40, height: 40 })// brighten dark detailes
   //.linear()//?
-  //.modulate({
-  //   brightness: 1,
-  //   saturation: 2,
-  //   hue: 270,
-  //   lightness: 1
-  // })
+  .modulate({
+     brightness: .8,
+     //saturation: 2,
+     //hue: 270,
+     lightness: 1
+  })
   //.grayscale()
 
   //.toFormat('webp')

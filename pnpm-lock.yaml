@@ -4,6 +4,7 @@ specifiers:
   postcss: ^8.4.13
   postcss-preset-env: ^7.5.0
   sass: ^1.51.0
+  sharp: ^0.30.6
   vite: ^2.9.7
   vite-imagetools: ^4.0.3
 
@@ -11,6 +12,7 @@ devDependencies:
   postcss: 8.4.13
   postcss-preset-env: 7.5.0_postcss@8.4.13
   sass: 1.51.0
+  sharp: 0.30.6
   vite: 2.9.9_sass@1.51.0
   vite-imagetools: 4.0.3
 
@@ -139,7 +141,7 @@ packages:
     dev: true
 
   /ansi-regex/2.1.1:
-    resolution: {integrity: sha1-w7M6te42DYbg5ijwRorn7yfWVN8=}
+    resolution: {integrity: sha512-TIGnTpdo+E3+pCyAluZvtED5p5wCqLdezCyhPZzKPcxvFplEt4i+W7OONCKgeZFT3+y5NZZfOOS/Bdcanm1MYA==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -249,7 +251,7 @@ packages:
     dev: true
 
   /code-point-at/1.1.0:
-    resolution: {integrity: sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=}
+    resolution: {integrity: sha512-RpAVKQA5T63xEj6/giIbUEtZwJ4UFIc3ZtvEkiaUERylqe8xb5IvqcgOurZLahv93CLKfxcw5YI+DZcUBRyLXA==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -280,7 +282,7 @@ packages:
     dev: true
 
   /console-control-strings/1.1.0:
-    resolution: {integrity: sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=}
+    resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
     dev: true
 
   /core-util-is/1.0.3:
@@ -342,11 +344,11 @@ packages:
     dev: true
 
   /delegates/1.0.0:
-    resolution: {integrity: sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=}
+    resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
     dev: true
 
   /detect-libc/1.0.3:
-    resolution: {integrity: sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=}
+    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
     engines: {node: '>=0.10'}
     hasBin: true
     dev: true
@@ -616,7 +618,7 @@ packages:
     dev: true
 
   /gauge/2.7.4:
-    resolution: {integrity: sha1-LANAXHU4w51+s3sxcCLjJfsBi/c=}
+    resolution: {integrity: sha512-14x4kjc6lkD3ltw589k0NrPD6cCNTD6CWoVUNpB85+DrtONoZn+Rug6xZU5RvSC4+TZPxA5AnBibQYAvZn41Hg==}
     dependencies:
       aproba: 1.2.0
       console-control-strings: 1.1.0
@@ -629,7 +631,7 @@ packages:
     dev: true
 
   /github-from-package/0.0.0:
-    resolution: {integrity: sha1-l/tdlr/eiXMxPyDoKI75oWf6ZM4=}
+    resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
     dev: true
 
   /glob-parent/5.1.2:
@@ -640,7 +642,7 @@ packages:
     dev: true
 
   /has-unicode/2.0.1:
-    resolution: {integrity: sha1-4Ob+aijPUROIVeCG0Wkedx3iqLk=}
+    resolution: {integrity: sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==}
     dev: true
 
   /has/1.0.3:
@@ -696,7 +698,7 @@ packages:
     dev: true
 
   /is-fullwidth-code-point/1.0.0:
-    resolution: {integrity: sha1-754xOG8DGn8NZDr4L95QxFfvAMs=}
+    resolution: {integrity: sha512-1pqUqRjkhPJ9miNq9SwMfdvi6lBJcd6eFxvfaivQhaH3SgisfiuudvFntdKOmxuee/77l+FPjKrQjWvmPjWrRw==}
     engines: {node: '>=0.10.0'}
     dependencies:
       number-is-nan: 1.0.1
@@ -715,7 +717,7 @@ packages:
     dev: true
 
   /isarray/1.0.0:
-    resolution: {integrity: sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=}
+    resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
     dev: true
 
   /lru-cache/6.0.0:
@@ -763,6 +765,10 @@ packages:
 
   /node-addon-api/4.3.0:
     resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
+    dev: true
+
+  /node-addon-api/5.0.0:
+    resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: true
 
   /node-releases/2.0.4:
@@ -1279,6 +1285,21 @@ packages:
       color: 4.2.3
       detect-libc: 1.0.3
       node-addon-api: 4.3.0
+      prebuild-install: 7.1.0
+      semver: 7.3.7
+      simple-get: 4.0.1
+      tar-fs: 2.1.1
+      tunnel-agent: 0.6.0
+    dev: true
+
+  /sharp/0.30.6:
+    resolution: {integrity: sha512-lSdVxFxcndzcXggDrak6ozdGJgmIgES9YVZWtAFrwi+a/H5vModaf51TghBtMPw+71sLxUsTy2j+aB7qLIODQg==}
+    engines: {node: '>=12.13.0'}
+    requiresBuild: true
+    dependencies:
+      color: 4.2.3
+      detect-libc: 2.0.1
+      node-addon-api: 5.0.0
       prebuild-install: 7.1.0
       semver: 7.3.7
       simple-get: 4.0.1

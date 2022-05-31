@@ -19,6 +19,8 @@ $blur: 1.5px;
 $c1: color.adjust(#f0f, $lightness: 6%, $hue: 25);
 $c2: color.adjust(#0ff, $hue: 20);
 h1 {
+  position: relative;
+  bottom: 10vh;
   opacity: 1;
   display: inline-block;
   z-index: 1;

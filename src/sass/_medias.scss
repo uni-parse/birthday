@@ -2,7 +2,7 @@
 @use 'sass:list' as *;
 address {
   //border: solid red thin;
-  $size: clamp(1.8rem, 7vmin, 2.5rem);
+  $size: clamp(2rem, 7vmin, 2.5rem);
   position: fixed;
   z-index: 2;
   display: flex;
