@@ -2,15 +2,14 @@
 import './sass/main.scss'
 import './mediaIcons'
 import showMedias from './mediaIcons'
-import audioBirthday from './assets/birthday.mp3'
+import audioBirthday from './assets/birthday1.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
 import audioFireworks from './assets/fireworks.wav'
-import audioIntro from './assets/intro.mp3'
+import audioIntro from './assets/birthday.mp3'
 import audioBoom from './assets/boom.wav'
-import borderImg from './assets/border.webp'
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
   <h1></h1>
@@ -34,7 +33,6 @@ const h1 = document.querySelectorAll('h1'),
   date = document.querySelector('input[type=date]'),
   output = document.querySelectorAll('output'),
   btn = document.querySelector('button')
-dialog.style.borderImage = `url(${borderImg}) 25% 35% fill/25/5`
 
 function spanLetters(str) {
   let span = ''
@@ -57,11 +55,10 @@ function fun() {
   }, 500)
   birthday.addEventListener('click', e => {
     e.stopPropagation()
-    audios.intro.pause()
-    audios.intro.currentTime = 0
     h1[1].style.fontSize = '1px';
-    //clamp(1.4rem, 8vw, 4rem)
     setTimeout(() => {
+      audios.intro.pause()
+      audios.intro.currentTime = 0
       h1[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
       h1[0].style.transform = 'scale(.01)'
       h1[1].style.transform = 'scale(.01)'

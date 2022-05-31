@@ -2,14 +2,13 @@ dialog {
   //margin: 0;
   padding-bottom: 2em;
   //border: solid yellow thin;
-  border-style: solid;
+  border: double;
   color: #fff;
   background: transparent;
-  //background: red linear-gradient(#083f5f, #571557 70%);
-  //border-radius: 30% 30% 3em 3em/50% 50% 3em 3em;
+  background: linear-gradient(#083f5fcc, #571557cc 70%);
+  border-radius: 30% 30% 3em 3em/50% 50% 3em 3em;
   transition: all 0.5s;
   text-align: center;
-  form{padding: .5em;}
   details {
     transition: all 0.5s;
     summary {
