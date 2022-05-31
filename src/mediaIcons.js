@@ -98,7 +98,7 @@ function showMedias(audio) {
   for (let i = 0; i < imgs.length; i++) {
     imgs[i].style.bottom = '.3rem'
     imgs[i].addEventListener('click', () => {
-      audio[0].play()
+      audio.play()
       toggle[i] = !toggle[i]
       if (toggle[i] == true) {
         for (const svg of svgs[i]) {
