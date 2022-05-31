@@ -10,7 +10,7 @@ import audioSuccess from './assets/success.wav'
 import audioFireworks from './assets/fireworks.wav'
 import audioIntro from './assets/intro.mp3'
 import audioBoom from './assets/boom.wav'
-import borderImg from './assets/_.webp'
+import borderImg from './assets/border.webp'
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `
   <h1></h1>
