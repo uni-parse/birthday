@@ -2,13 +2,13 @@
 import './sass/main.scss'
 import './mediaIcons'
 import showMedias from './mediaIcons'
-import audioBirthday from './assets/birthday1.mp3'
+import audioBirthday from './assets/birthday.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
 import audioFireworks from './assets/fireworks.wav'
-import audioIntro from './assets/birthday.mp3'
+import audioIntro from './assets/intro.mp3'
 import audioBoom from './assets/boom.wav'
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `

@@ -36,7 +36,7 @@ h1 {
     color: #e0dd0c;
   }
   span {
-    transition: font-size .8s,color .8s;
+    transition: font-size .7s ease-out,color .7s ease-out;
     &:nth-child(2n):hover {
       //font-weight: 900;
       font-size: 1.2em;
