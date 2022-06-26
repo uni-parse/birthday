@@ -3,8 +3,7 @@ import './sass/main.scss'
 import './mediaIcons'
 import showMedias from './mediaIcons'
 const birthday = document.querySelector('#birthday')
-birthday.innerHTML = `
-  <h1></h1>
+birthday.innerHTML = `<h1></h1>
   <h1>${spanLetters('loading…')}</h1>`
 const h1 = document.querySelectorAll('h1'),
   stars = document.querySelectorAll('#stars1,#stars2,#stars3'),

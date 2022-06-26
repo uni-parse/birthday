@@ -50,4 +50,7 @@ address {
       }
     }
   }
+  &:nth-of-type(2) {
+    bottom: clamp(2.3rem, 7.3vmin, 2.8rem);
+  }
 }
