@@ -2,30 +2,9 @@
 import './sass/main.scss'
 import './mediaIcons'
 import showMedias from './mediaIcons'
-import audioBirthday from './assets/birthday1.mp3'
-import audioClick from './assets/click.wav'
-import audioFalse from './assets/false.wav'
-import audioTrue from './assets/true.wav'
-import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks.wav'
-import audioIntro from './assets/birthday.mp3'
-import audioBoom from './assets/boom.wav'
 const birthday = document.querySelector('#birthday')
-birthday.innerHTML = `
-  <h1></h1>
+birthday.innerHTML = `<h1></h1>
   <h1>${spanLetters('loading…')}</h1>`
-const audios = {
-  click: new Audio(audioClick),//0
-  true: new Audio(audioTrue),//1
-  false: new Audio(audioFalse),//2
-  success: new Audio(audioSuccess),//3
-  fireworks: new Audio(audioFireworks),//4
-  birthday: new Audio(audioBirthday),//5
-  intro: new Audio(audioIntro),//6
-  boom: new Audio(audioBoom),//7
-}
-audios.birthday.setAttribute('loop', true)
-audios.intro.setAttribute('loop', true)
 const h1 = document.querySelectorAll('h1'),
   stars = document.querySelectorAll('#stars1,#stars2,#stars3'),
   dialog = document.querySelector('dialog'),
@@ -57,11 +36,10 @@ function fun() {
     e.stopPropagation()
     h1[1].style.fontSize = '1px';
     setTimeout(() => {
-      audios.intro.pause()
-      audios.intro.currentTime = 0
+      audios.intro.play('stop')
       h1[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
-      h1[0].style.transform = 'scale(.01)'
-      h1[1].style.transform = 'scale(.01)'
+      h1[0].style.transform = 'scale(0)'
+      h1[1].style.transform = 'scale(0)'
       h1[0].style.animation = 'none'
       h1[1].style.animation = 'none'
       setTimeout(() => {
@@ -71,7 +49,7 @@ function fun() {
         h1[1].setAttribute('data-contentBefore', '🎉')
         h1[1].setAttribute('data-contentAfter', '🥳')
         audios.boom.play()
-        audios.birthday.play()
+        audios.birthday.play('loop')
         party.confetti(h1[1], { count: party.variation.range(34, 35) })
         h1[0].style.transform = 'scale(1)'
         h1[1].style.transform = 'scale(1)'
@@ -97,67 +75,104 @@ function fun() {
     })
   })
 }
-
+class audioClass {
+  context = new AudioContext()
+  source = this.context.createBufferSource()
+  constructor(audio) {
+    this.fetch = fetch(`/src/assets/${audio.includes('.mp3') ? audio : audio + '.wav'}`)
+      .then(response => response.arrayBuffer())
+      .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
+      .then(audioBuffer => this.source.buffer = audioBuffer)
+      .then(() => this.source.connect(this.context.destination))
+  }
+  play(action) {
+    if (action == 'loop') {
+      this.source.connect(this.context.destination)
+      this.source.start(0)
+      this.source.loop = true
+    } else if (action == 'stop') {
+      this.source.stop(0)
+    } else {
+      const source = this.context.createBufferSource()
+      source.buffer = this.source.buffer
+      source.connect(this.context.destination)
+      source.start(0)
+    }
+  }
+}
+const audiosArr = ['click', 'success', 'true', 'false', 'boom', 'fireworks', 'intro.mp3', 'birthday.mp3']
+const promises = []
+const audios = {}
+for (const audio of audiosArr) {
+  audios[audio.includes('.mp3') ? audio.replace('.mp3', '') : audio] = new audioClass(audio)
+  promises.push(
+    audios[audio.includes('.mp3') ? audio.replace('.mp3', '') : audio].fetch
+  )
+}
 if (typeof dialog.showModal === "function") {
   window.addEventListener('load', () => {
-    h1[1].style.transform = 'scale(.01)'
-    dialog.style.transform = 'scale(.01)'
-    setTimeout(() => {
-      console.log('loaded')
-      h1[1].innerText = ''
-      dialog.showModal()
-      dialog.style.transform = 'scale(1)'
-      dialog.addEventListener('click', () => audios.click.play())
-      dialog.addEventListener('click', () => audios.intro.play(), { once: true })
-      select.addEventListener('change', () => {
-        if (date.value == '2000-01-15' && select.value == 2014) {
-          audios.success.play()
-          select.disabled = true
-          btn.disabled = false
-          btn.innerText = 'Unlocked'
-          btn.setAttribute('data-lock', '🔑')
-          output[0].style.color = 'greenyellow'
-          output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
-        } else if (select.value == 2014) {
-          audios.true.play()
-          select.disabled = true
-          output[0].style.color = 'greenyellow'
-          output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
-        } else {
-          audios.false.play()
-          output[0].style.color = 'darkorange'
-          output[0].innerHTML = `Nooo😅 we meet on <span>2014 ✓</span><br>not <span>${select.value}✗</span> !!`
-        }
-      })
-      date.addEventListener('change', () => {
-        if (date.value == '2000-01-15' && select.value == 2014) {
-          audios.success.play()
-          date.disabled = true
-          btn.disabled = false
-          btn.innerText = 'Unlocked'
-          btn.setAttribute('data-lock', '🔑')
-          output[1].style.color = 'greenyellow'
-          output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
-        } else if (date.value == '2000-01-15') {
-          audios.true.play()
-          date.disabled = true
-          output[1].style.color = 'greenyellow'
-          output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
-        } else {
-          audios.false.play()
-          output[1].style.color = 'darkorange'
-          output[1].innerHTML = `Nooo😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
-          date.value = '2000-01-29'
-        }
-      })
-      btn.addEventListener('click', () => {
-        dialog.style.transform = 'scale(.01)'
-        setTimeout(() => {
-          dialog.close()
-          fun()
-        }, 500);
-      }, { once: true })
-    }, 500);
+    Promise.all(promises).then(() => {
+      console.log('all promises settled')
+      h1[1].style.transform = 'scale(0)'
+      dialog.style.transform = 'scale(0)'
+      setTimeout(() => {
+        console.log('loaded')
+        h1[1].innerText = ''
+        dialog.showModal()
+        dialog.style.transform = 'scale(1)'
+        dialog.addEventListener('click', () => audios.click.play())
+        dialog.addEventListener('click', () => audios.intro.play('loop'), { once: true })
+        select.addEventListener('change', () => {
+          if (date.value == '2000-01-15' && select.value == 2014) {
+            audios.success.play()
+            select.disabled = true
+            btn.disabled = false
+            btn.innerText = 'Unlocked'
+            btn.setAttribute('data-lock', '🔑')
+            output[0].style.color = 'greenyellow'
+            output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
+          } else if (select.value == 2014) {
+            audios.true.play()
+            select.disabled = true
+            output[0].style.color = 'greenyellow'
+            output[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
+          } else {
+            audios.false.play()
+            output[0].style.color = 'darkorange'
+            output[0].innerHTML = `Nooo😅 we meet on <span>2014 ✓</span><br>not <span>${select.value}✗</span> !!`
+          }
+        })
+        date.addEventListener('change', () => {
+          if (date.value == '2000-01-15' && select.value == 2014) {
+            audios.success.play()
+            date.disabled = true
+            btn.disabled = false
+            btn.innerText = 'Unlocked'
+            btn.setAttribute('data-lock', '🔑')
+            output[1].style.color = 'greenyellow'
+            output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
+          } else if (date.value == '2000-01-15') {
+            audios.true.play()
+            date.disabled = true
+            output[1].style.color = 'greenyellow'
+            output[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
+          } else {
+            audios.false.play()
+            output[1].style.color = 'darkorange'
+            output[1].innerHTML = `Nooo😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
+            date.value = '2000-01-29'
+          }
+        })
+        btn.addEventListener('click', () => {
+          dialog.style.transform = 'scale(0)'
+          setTimeout(() => {
+            dialog.close()
+            fun()
+          }, 500);
+        }, { once: true })
+      }, 500);
+    })
+
   })
 } else {
   dialog.hidden = true;
