@@ -38,8 +38,8 @@ function fun() {
     setTimeout(() => {
       audios.intro.play('stop')
       h1[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
-      h1[0].style.transform = 'scale(.01)'
-      h1[1].style.transform = 'scale(.01)'
+      h1[0].style.transform = 'scale(0)'
+      h1[1].style.transform = 'scale(0)'
       h1[0].style.animation = 'none'
       h1[1].style.animation = 'none'
       setTimeout(() => {
@@ -113,8 +113,8 @@ if (typeof dialog.showModal === "function") {
   window.addEventListener('load', () => {
     Promise.all(promises).then(() => {
       console.log('all promises settled')
-      h1[1].style.transform = 'scale(.01)'
-      dialog.style.transform = 'scale(.01)'
+      h1[1].style.transform = 'scale(0)'
+      dialog.style.transform = 'scale(0)'
       setTimeout(() => {
         console.log('loaded')
         h1[1].innerText = ''
@@ -164,7 +164,7 @@ if (typeof dialog.showModal === "function") {
           }
         })
         btn.addEventListener('click', () => {
-          dialog.style.transform = 'scale(.01)'
+          dialog.style.transform = 'scale(0)'
           setTimeout(() => {
             dialog.close()
             fun()
