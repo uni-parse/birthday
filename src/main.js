@@ -2,6 +2,45 @@
 import './sass/main.scss'
 import './mediaIcons'
 import showMedias from './mediaIcons'
+
+import audioClick from './assets/click.wav'
+import audioFalse from './assets/false.wav'
+import audioTrue from './assets/true.wav'
+import audioSuccess from './assets/success.wav'
+import audioFireworks from './assets/fireworks.wav'
+import audioBoom from './assets/boom.wav'
+import audioIntro from './assets/intro.mp3'
+import audioBirthday from './assets/birthday.mp3'
+const audios = {
+  click: new Audio(audioClick),
+  true: new Audio(audioTrue),
+  false: new Audio(audioFalse),
+  success: new Audio(audioSuccess),
+  fireworks: new Audio(audioFireworks),
+  birthday: new Audio(audioBirthday),
+  intro: new Audio(audioIntro),
+  boom: new Audio(audioBoom),
+}
+audios.birthday.setAttribute('loop', true)
+audios.intro.setAttribute('loop', true)
+const audiosPromises = []
+
+for (const audio in audios) {
+  if (audio != 'birthday' && audio != 'intro') {
+    audiosPromises.push(new Promise(resulve => {
+      if (audios[audio].HAVE_ENOUGH_DATA) {
+        resulve()
+      }
+    }))
+  } else {
+    audiosPromises.push(new Promise(resulve => {
+      if (audios[audio].HAVE_FUTURE_DATA) {
+        resulve()
+      }
+    }))
+  }
+}
+console.log(audiosPromises);
 const birthday = document.querySelector('#birthday')
 birthday.innerHTML = `<h1></h1>
   <h1>${spanLetters('loading…')}</h1>`
@@ -36,7 +75,8 @@ function fun() {
     e.stopPropagation()
     h1[1].style.fontSize = '1px';
     setTimeout(() => {
-      audios.intro.play('stop')
+      audios.intro.pause()
+      audios.intro.currentTime = 0
       h1[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
       h1[0].style.transform = 'scale(0)'
       h1[1].style.transform = 'scale(0)'
@@ -49,7 +89,7 @@ function fun() {
         h1[1].setAttribute('data-contentBefore', '🎉')
         h1[1].setAttribute('data-contentAfter', '🥳')
         audios.boom.play()
-        audios.birthday.play('loop')
+        audios.birthday.play()
         party.confetti(h1[1], { count: party.variation.range(34, 35) })
         h1[0].style.transform = 'scale(1)'
         h1[1].style.transform = 'scale(1)'
@@ -75,43 +115,11 @@ function fun() {
     })
   })
 }
-class audioClass {
-  context = new AudioContext()
-  source = this.context.createBufferSource()
-  constructor(audio) {
-    this.fetch = fetch(`/src/assets/${audio.includes('.mp3') ? audio : audio + '.wav'}`)
-      .then(response => response.arrayBuffer())
-      .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
-      .then(audioBuffer => this.source.buffer = audioBuffer)
-      .then(() => this.source.connect(this.context.destination))
-  }
-  play(action) {
-    if (action == 'loop') {
-      this.source.connect(this.context.destination)
-      this.source.start(0)
-      this.source.loop = true
-    } else if (action == 'stop') {
-      this.source.stop(0)
-    } else {
-      const source = this.context.createBufferSource()
-      source.buffer = this.source.buffer
-      source.connect(this.context.destination)
-      source.start(0)
-    }
-  }
-}
-const audiosArr = ['click', 'success', 'true', 'false', 'boom', 'fireworks', 'intro.mp3', 'birthday.mp3']
-const promises = []
-const audios = {}
-for (const audio of audiosArr) {
-  audios[audio.includes('.mp3') ? audio.replace('.mp3', '') : audio] = new audioClass(audio)
-  promises.push(
-    audios[audio.includes('.mp3') ? audio.replace('.mp3', '') : audio].fetch
-  )
-}
+
+
 if (typeof dialog.showModal === "function") {
   window.addEventListener('load', () => {
-    Promise.all(promises).then(() => {
+    Promise.all(audiosPromises).then(() => {
       console.log('all promises settled')
       h1[1].style.transform = 'scale(0)'
       dialog.style.transform = 'scale(0)'
@@ -121,7 +129,7 @@ if (typeof dialog.showModal === "function") {
         dialog.showModal()
         dialog.style.transform = 'scale(1)'
         dialog.addEventListener('click', () => audios.click.play())
-        dialog.addEventListener('click', () => audios.intro.play('loop'), { once: true })
+        dialog.addEventListener('click', () => audios.intro.play(), { once: true })
         select.addEventListener('change', () => {
           if (date.value == '2000-01-15' && select.value == 2014) {
             audios.success.play()
