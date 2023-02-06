@@ -60,10 +60,10 @@ h1 {
   }
   &:last-of-type {
     &::before {
-      content: attr(data-contentBefore);
+      content: attr(data-content-before);
     }
     &::after {
-      content: attr(data-contentAfter);
+      content: attr(data-content-after);
     }
   }
 }

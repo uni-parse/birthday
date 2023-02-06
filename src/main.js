@@ -122,11 +122,12 @@ select.addEventListener('change', function handler() {
   }
 
   select.removeEventListener('change', handler)
-  unlockDialog(date.value == '2000-01-15')
-
+  
   select.disabled = true
   outputs[0].style.color = 'greenyellow'
   outputs[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
+
+  unlockDialog()
 })
 
 date.addEventListener('change', function handler() {
@@ -138,97 +139,94 @@ date.addEventListener('change', function handler() {
   }
 
   date.removeEventListener('change', handler)
-  unlockDialog(select.value == 2014)
-
+  
   date.disabled = true
   outputs[1].style.color = 'greenyellow'
   outputs[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
+  
+  unlockDialog()
 })
 
 surbriseBtn.addEventListener('click', async () => {
   dialog.style.transform = 'scale(0)'
 
   await sleep(500)
-
   dialog.close()
 
   h1s[1].innerHTML = spanLetters('›_~')
   h1s[1].style.transform = 'scale(1)'
 
-
-  birthday.addEventListener('click', async e => {
-    e.stopPropagation()
-
-    const status = await promisesState(surprisePromises)
-    if (status != 'fulfilled') {
-      h1s[1].innerHTML = spanLetters('… ›_~ …')
-      await Promise.all(surprisePromises)
-    }
-
-    h1s[1].style.fontSize = '1px';
-
-    document.addEventListener('click', e => {
-      audios.fireworks.play()
-      party.sparkles(e, {
-        count: party.variation.range(3, 7),
-        size: party.variation.range(0.8, 1.2),
-      })
-    })
-
-    await sleep(1000)
-    audios.intro.pause()
-    audios.intro.currentTime = 0
-    delete audios.intro
-    delete audios.true
-    delete audios.false
-    delete audios.success
-    delete audios.click
-
-    h1s[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
-
-    for (const h1 of h1s) {
-      h1.style.transform = 'scale(0)'
-      h1.style.animation = 'none'
-    }
-
-    await sleep(500)
-    h1s[0].innerHTML = spanLetters('Happy Birthday')
-    h1s[0].setAttribute('data-content', '🎊')
-
-    h1s[1].innerHTML = spanLetters('Mechid')
-    h1s[1].setAttribute('data-contentBefore', '🎉')
-    h1s[1].setAttribute('data-contentAfter', '🥳')
-
-    audios.boom.play()
-    audios.birthday.play()
-
-    party.confetti(h1s[1], {
-      count: party.variation.range(34, 35)
-    })
-
-    for (const h1 of h1s) h1.style.transform = 'scale(1)'
-
-    await sleep(350)
-    for (const h1 of h1s) h1.style.animation =
-      'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-
-    await sleep(150)
-    stars.forEach((star, i) => star.style.animation =
-      `stars${i + 1} 60s ease-in-out infinite alternate`
-    )
-
-
-    await sleep(9000)
-    showMedias()
-  }, { once: true })
+  birthday.addEventListener('click', surprise, { once: true })
 
   await sleep(500)
   for (const h1 of h1s) h1.style.animation =
     'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-
 }, { once: true })
 
 
+async function surprise(event) {
+  event.stopPropagation()
+
+  const state = await promisesState(surprisePromises)
+  if (state != 'fulfilled') {
+    h1s[1].innerHTML = spanLetters('… ›_~ …')
+    await Promise.all(surprisePromises)
+  }
+
+  h1s[1].style.fontSize = '1px';
+
+  document.addEventListener('click', e => {
+    audios.fireworks.play()
+    party.sparkles(e, {
+      count: party.variation.range(3, 7),
+      size: party.variation.range(0.8, 1.2),
+    })
+  })
+
+  await sleep(1000)
+  audios.intro.pause()
+  audios.intro.currentTime = 0
+  delete audios.intro
+  delete audios.click
+
+  h1s[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
+
+  for (const h1 of h1s) {
+    h1.style.transform = 'scale(0)'
+    h1.style.animation = 'none'
+  }
+
+  await sleep(500)
+  h1s[0].innerHTML = spanLetters('Happy Birthday')
+  h1s[1].innerHTML = spanLetters('Mechid')
+
+  h1s[0].dataset.content = '🎊'
+  h1s[1].dataset.contentBefore = '🎉'
+  h1s[1].dataset.contentAfter = '🥳'
+
+  audios.birthday.play()
+  audios.boom.play().addEventListener(
+    'ended', () => delete audios.boom, { once: true }
+  )
+
+
+  party.confetti(h1s[1], {
+    count: party.variation.range(34, 35)
+  })
+
+  for (const h1 of h1s) h1.style.transform = 'scale(1)'
+
+  await sleep(350)
+  for (const h1 of h1s) h1.style.animation = 'hb 1.5s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+
+  await sleep(150)
+  stars.forEach((star, i) => star.style.animation =
+    `stars${i + 1} 60s ease-in-out infinite alternate`
+  )
+
+  await sleep(9000)
+  showMedias()
+}
 
 //halpers
 function sleep(ms) {
@@ -242,12 +240,20 @@ function spanLetters(str) {
     , '')
 }
 
-function unlockDialog(cnd) {
-  if (!cnd) return audios.true.play()
-  audios.success.play()
+function unlockDialog() {
+  if (!(date.value == '2000-01-15' && select.value == 2014)) {
+    audios.true.play().addEventListener('ended', () =>
+      delete audios.true, { once: true })
+    return
+  }
+
+  delete audios.false
+  audios.success.play().addEventListener('ended', () =>
+    delete audios.success, { once: true })
+
   surbriseBtn.disabled = false
   surbriseBtn.innerText = 'Unlocked'
-  surbriseBtn.setAttribute('data-lock', '🔑')
+  surbriseBtn.dataset.lock = '🔑'
 }
 
 async function fetchAudio(url) {
@@ -255,29 +261,34 @@ async function fetchAudio(url) {
     ctx = new AudioContext(),
     data = await fetch(url),
     arrayBuffer = await data.arrayBuffer(),
-    audio = await ctx.decodeAudioData(arrayBuffer)
+    audioBuffer = await ctx.decodeAudioData(arrayBuffer)
 
-  async function play() {
+  function play() {
     const playSound = ctx.createBufferSource()
-    playSound.buffer = audio
+    playSound.buffer = audioBuffer
     playSound.connect(ctx.destination)
     playSound.start(ctx.currentTime)
+
+    return playSound
+    //playSound.stop( when?: ctx.currentTime )
+    //playSound.addEventListener('ended', handler)
   }
 
-  return { play }
+  return { play, __proto__: null }
 }
 
 async function promisesState(promises) {
-  const status = []
+  const status = new Set()
+
   for (const promise of promises) {
-    const t = {}
-    status.push(await Promise.race([promise, t]).then(
-      v => (v === t) ? 'pending' : 'fulfilled',
-      () => 'rejected'
-    ))
+    const t = {}, state = await Promise.race([promise, t])
+      .then(v => v === t ? 'pending' : 'fulfilled')
+      .catch(() => 'rejected')
+
+    if (state == 'rejected') return 'rejected'
+
+    status.add(state)
   }
 
-  if (status.includes('rejected')) return 'rejecded'
-  else return status.includes('pending')
-    ? 'pending' : 'fulfilled'
+  return status.has('pending') ? 'pending' : 'fulfilled'
 }
