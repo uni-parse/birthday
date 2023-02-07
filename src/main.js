@@ -16,18 +16,12 @@ main.innerHTML = `
   </div>`
 
 attachMedias(main)
-document.body.appendChild(main)
+document.body.append(main)
 
 const
   stars = main.querySelectorAll('#stars1, #stars2, #stars3'),
   birthday = main.querySelector('#birthday'),
-  h1s = birthday.querySelectorAll('h1'),
-
-  dialog = document.body.querySelector('dialog'),
-  select = dialog.querySelector('select'),
-  date = dialog.querySelector('input[type=date]'),
-  outputs = dialog.querySelectorAll('output'),
-  surbriseBtn = dialog.querySelector('button')
+  h1s = birthday.querySelectorAll('h1')
 
 
 const audios = {}, introPromises = []
@@ -43,6 +37,17 @@ await whilePending(introPromises, async () => {
 h1s[1].style.transform = 'scale(0)'
 if (loading) await sleep(500) //animation duration
 h1s[1].innerText = ''
+
+
+
+
+const 
+  dialog = document.body.querySelector('dialog'),
+  select = dialog.querySelector('select'),
+  date = dialog.querySelector('input[type=date]'),
+  outputs = dialog.querySelectorAll('output'),
+  surbriseBtn = dialog.querySelector('button')
+
 
 dialog.style.transform = 'scale(0)'
 dialog.showModal()

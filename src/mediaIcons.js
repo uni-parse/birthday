@@ -34,16 +34,16 @@ function attachMedias(ctx) {
 
     users[user].medias.forEach(([svg, url]) => {
       const a = document.createElement('a')
-      a.setAttribute('target', '_blank')
-      a.setAttribute('href', url)
+      a.target = '_blank'
+      a.href = url
       a.innerHTML = svg
-      address.appendChild(a)
+      address.append(a)
     })
 
     const img = document.createElement('img')
     img.srcset = users[user].srcset
-    img.setAttribute('alt', user)
-    address.appendChild(img)
+    img.alt = user
+    address.append(img)
 
     const svgs = [...address.querySelectorAll('svg')]
     svgs.forEach((svg, i) => svg.style.transition =
@@ -60,7 +60,7 @@ function attachMedias(ctx) {
     users[user].img = img
     users[user].svgs = svgs
 
-    ctx.appendChild(address)
+    ctx.append(address)
   }
 }
 

@@ -45,7 +45,7 @@ function startsFetchingSurprise(audios, surprisePromises) {
   const script = document.createElement('script')
   script.async = true
   script.src = partyUrl
-  document.head.appendChild(script)
+  document.head.append(script)
 
   surprisePromises.push(
     new Promise(rs => script.addEventListener(
