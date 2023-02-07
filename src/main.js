@@ -1,111 +1,50 @@
 // ★▶►▬•»›▲♥⚠️💡±×÷²√π⁰≠≈≤≥Ø∞✓✗✖ € ← → ↑ ↓ ⇆♪©Ⓓ†₱…
 import './sass/main.scss'
 
-import audioClick from './assets/click.wav'
-import audioFalse from './assets/false.wav'
-import audioTrue from './assets/true.wav'
-import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks.wav'
-import audioBoom from './assets/boom.wav'
-import audioIntro from './assets/intro.mp3'
-import audioBirthday from './assets/birthday.mp3'
-
 import attachMedias, { showMedias } from './mediaIcons'
+import { startsFetchingIntro, startsFetchingSurprise } from './assets'
 
 const main = document.createElement('main')
 main.innerHTML = `
   <div id=stars1></div>
   <div id=stars2></div>
   <div id=stars3></div>
-  <div id=birthday></div>`
+
+  <div id=birthday>
+    <h1></h1>
+    <h1></h1>
+  </div>`
+
 attachMedias(main)
 document.body.appendChild(main)
 
+const
+  stars = main.querySelectorAll('#stars1, #stars2, #stars3'),
+  birthday = main.querySelector('#birthday'),
+  h1s = birthday.querySelectorAll('h1'),
+
+  dialog = document.body.querySelector('dialog'),
+  select = dialog.querySelector('select'),
+  date = dialog.querySelector('input[type=date]'),
+  outputs = dialog.querySelectorAll('output'),
+  surbriseBtn = dialog.querySelector('button')
 
 
-const birthday = document.querySelector('#birthday')
-birthday.innerHTML = `<h1></h1>
-  <h1>${spanLetters('loading…')}</h1>`
+const audios = {}, introPromises = []
+startsFetchingIntro(audios, introPromises)
 
-const h1s = document.querySelectorAll('h1'),
-  stars = document.querySelectorAll('#stars1,#stars2,#stars3'),
-  dialog = document.querySelector('dialog'),
-  select = document.querySelector('select'),
-  date = document.querySelector('input[type=date]'),
-  outputs = document.querySelectorAll('output'),
-  surbriseBtn = document.querySelector('button')
-
-
-const audios = {
-  click: fetchAudio(audioClick),
-  true: fetchAudio(audioTrue),
-  false: fetchAudio(audioFalse),
-  success: fetchAudio(audioSuccess),
-  intro: new Audio(audioIntro),
-}
-
-audios.intro.setAttribute('loop', true)
-
-const introPromises = [
-  new Promise(rs => window.addEventListener(
-    'load', rs, { once: true }
-  )),
-  new Promise(rs => audios.intro.addEventListener(
-    'canplaythrough', rs, { once: true }
-  ))
-]
-for (const audio in audios)
-  if ('click true false success'.includes(audio))
-    introPromises.push(
-      (async () => audios[audio] = await audios[audio])()
-    )
-//console.log(introPromises)
-
-
-
-await Promise.all(introPromises)//.............................
-//console.log('loaded & all intro promises settled')
+await sleep(500)//wait for audio buffer|decode even if cached
+let loading
+await whilePending(introPromises, async () => {
+  h1s[1].innerHTML = spanLetters('loading…')
+  loading = true
+})
 
 h1s[1].style.transform = 'scale(0)'
-dialog.style.transform = 'scale(0)'
-
-
-
-
-
-//starts fetching surprise
-audios.fireworks = fetchAudio(audioFireworks)
-audios.boom = fetchAudio(audioBoom)
-audios.birthday = new Audio(audioBirthday)
-
-audios.birthday.setAttribute('loop', true)
-
-const script = document.createElement('script')
-script.async = true
-script.src = './../src/party.min.js'
-document.head.appendChild(script)
-
-const surprisePromises = [
-  new Promise(rs => script.addEventListener(
-    'load', rs, { once: true }
-  )),
-  new Promise(rs => audios.birthday.addEventListener(
-    'canplaythrough', rs, { once: true }
-  ))
-]
-for (const audio in audios)
-  if ('boom fireworks'.includes(audio))
-    surprisePromises.push(
-      (async () => audios[audio] = await audios[audio])()
-    )
-
-
-
-
-await sleep(500)
-
+if (loading) await sleep(500) //animation duration
 h1s[1].innerText = ''
 
+dialog.style.transform = 'scale(0)'
 dialog.showModal()
 dialog.style.transform = 'scale(1)'
 
@@ -115,14 +54,14 @@ dialog.addEventListener('click', () => audios.intro.play(),
 
 select.addEventListener('change', function handler() {
   if (select.value != 2014) {
-    audios.false.play()
     outputs[0].style.color = 'darkorange'
     outputs[0].innerHTML = `Ops😅 we meet on <span>2014 ✓</span><br>not <span>${select.value}✗</span> !!`
+    audios.false.play()
     return
   }
 
   select.removeEventListener('change', handler)
-  
+
   select.disabled = true
   outputs[0].style.color = 'greenyellow'
   outputs[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
@@ -132,20 +71,28 @@ select.addEventListener('change', function handler() {
 
 date.addEventListener('change', function handler() {
   if (date.value != '2000-01-15') {
-    audios.false.play()
     outputs[1].style.color = 'darkorange'
     outputs[1].innerHTML = `Ops😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
+    audios.false.play()
     return
   }
 
   date.removeEventListener('change', handler)
-  
+
   date.disabled = true
   outputs[1].style.color = 'greenyellow'
   outputs[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
-  
+
   unlockDialog()
 })
+
+
+
+
+const surprisePromises = []
+startsFetchingSurprise(audios, surprisePromises)
+
+
 
 surbriseBtn.addEventListener('click', async () => {
   dialog.style.transform = 'scale(0)'
@@ -167,11 +114,8 @@ surbriseBtn.addEventListener('click', async () => {
 async function surprise(event) {
   event.stopPropagation()
 
-  const state = await promisesState(surprisePromises)
-  if (state != 'fulfilled') {
-    h1s[1].innerHTML = spanLetters('… ›_~ …')
-    await Promise.all(surprisePromises)
-  }
+  await whilePending(surprisePromises, () =>
+    h1s[1].innerHTML = spanLetters('… ›_~ …'))
 
   h1s[1].style.fontSize = '1px';
 
@@ -228,7 +172,9 @@ async function surprise(event) {
   showMedias()
 }
 
+
 //halpers
+
 function sleep(ms) {
   return new Promise(rs => setTimeout(rs, ms))
 }
@@ -256,25 +202,10 @@ function unlockDialog() {
   surbriseBtn.dataset.lock = '🔑'
 }
 
-async function fetchAudio(url) {
-  const
-    ctx = new AudioContext(),
-    data = await fetch(url),
-    arrayBuffer = await data.arrayBuffer(),
-    audioBuffer = await ctx.decodeAudioData(arrayBuffer)
-
-  function play() {
-    const playSound = ctx.createBufferSource()
-    playSound.buffer = audioBuffer
-    playSound.connect(ctx.destination)
-    playSound.start(ctx.currentTime)
-
-    return playSound
-    //playSound.stop( when?: ctx.currentTime )
-    //playSound.addEventListener('ended', handler)
-  }
-
-  return { play, __proto__: null }
+async function whilePending(promises, callback) {
+  if (await promisesState(promises) != 'pending') return
+  callback()
+  await Promise.all(promises)
 }
 
 async function promisesState(promises) {
@@ -292,3 +223,4 @@ async function promisesState(promises) {
 
   return status.has('pending') ? 'pending' : 'fulfilled'
 }
+
