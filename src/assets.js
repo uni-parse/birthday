@@ -1,45 +1,42 @@
 export { startsFetchingIntro, startsFetchingSurprise }
 
-import partyUrl from './../src/party.min.js?url'
-
+import musicIntro from './assets/intro.mp3'
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
 import audioSuccess from './assets/success.wav'
-import audioFireworks from './assets/fireworks.wav'
+
+import musicBirthday from './assets/birthday.mp3'
 import audioBoom from './assets/boom.wav'
-import audioIntro from './assets/intro.mp3'
-import audioBirthday from './assets/birthday.mp3'
+import audioFireworks from './assets/fireworks.wav'
 
+import partyUrl from './assets/party.min.js?url'
 
-
-
-function startsFetchingIntro(audios, introPromises) {
+function startsFetchingIntro(audios) {
   audios.click = fetchAudio(audioClick)
   audios.true = fetchAudio(audioTrue)
   audios.false = fetchAudio(audioFalse)
   audios.success = fetchAudio(audioSuccess)
 
-  audios.intro = new Audio(audioIntro)
+  audios.intro = new Audio(musicIntro)
   audios.intro.loop = true
 
-  introPromises.push(
-    new Promise(rs => window.addEventListener(
-      'load', rs, { once: true })),
-    new Promise(rs => audios.intro.addEventListener(
-      'canplaythrough', rs, { once: true }))
-  )
+  const promises = [
+    getEventPromise(window, 'load'),
+    getEventPromise(audios.intro, 'canplaythrough'),
+  ]
 
-  for (const audio in audios) if (audio != 'intro')
-    introPromises.push(
-      (async () => audios[audio] = await audios[audio])())
+  for (const a in audios) if (a != 'intro')
+    promises.push((async () => audios[a] = await audios[a])())
+
+  return promises
 }
 
-function startsFetchingSurprise(audios, surprisePromises) {
+function startsFetchingSurprise(audios) {
   audios.fireworks = fetchAudio(audioFireworks)
   audios.boom = fetchAudio(audioBoom)
 
-  audios.birthday = new Audio(audioBirthday)
+  audios.birthday = new Audio(musicBirthday)
   audios.birthday.loop = true
 
   const script = document.createElement('script')
@@ -47,16 +44,15 @@ function startsFetchingSurprise(audios, surprisePromises) {
   script.src = partyUrl
   document.head.append(script)
 
-  surprisePromises.push(
-    new Promise(rs => script.addEventListener(
-      'load', rs, { once: true })),
-    new Promise(rs => audios.birthday.addEventListener(
-      'canplaythrough', rs, { once: true }))
-  )
+  const promises = [
+    getEventPromise(script, 'load'),
+    getEventPromise(audios.birthday, 'canplaythrough')
+  ]
 
-  for (let audio in audios) if ('boom fireworks'.includes(audio))
-    surprisePromises.push(
-      (async () => audios[audio] = await audios[audio])())
+  for (let a in audios) if ('boom fireworks'.includes(a))
+    promises.push((async () => audios[a] = await audios[a])())
+
+  return promises
 }
 
 //helpers
@@ -79,4 +75,10 @@ async function fetchAudio(url) {
   }
 
   return { play }
+}
+
+function getEventPromise(target, event) {
+  return new Promise(
+    rs => target.addEventListener(event, rs, { once: true })
+  )
 }

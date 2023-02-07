@@ -1,7 +1,7 @@
 // ★▶►▬•»›▲♥⚠️💡±×÷²√π⁰≠≈≤≥Ø∞✓✗✖ € ← → ↑ ↓ ⇆♪©Ⓓ†₱…
 import './sass/main.scss'
 
-import attachMedias, { showMedias } from './mediaIcons'
+import { attachMedias, showMedias } from './mediaIcons'
 import { startsFetchingIntro, startsFetchingSurprise } from './assets'
 
 const main = document.createElement('main')
@@ -15,7 +15,6 @@ main.innerHTML = `
     <h1></h1>
   </div>`
 
-attachMedias(main)
 document.body.append(main)
 
 const
@@ -24,12 +23,13 @@ const
   h1s = birthday.querySelectorAll('h1')
 
 
-const audios = {}, introPromises = []
-startsFetchingIntro(audios, introPromises)
+const audios = {},
+  introPromises = startsFetchingIntro(audios)
+
 
 await sleep(500)//wait for audio buffer|decode even if cached
 let loading
-await whilePending(introPromises, async () => {
+await whilePending(introPromises, () => {
   h1s[1].innerHTML = spanLetters('loading…')
   loading = true
 })
@@ -40,8 +40,7 @@ h1s[1].innerText = ''
 
 
 
-
-const 
+const
   dialog = document.body.querySelector('dialog'),
   select = dialog.querySelector('select'),
   date = dialog.querySelector('input[type=date]'),
@@ -94,8 +93,7 @@ date.addEventListener('change', function handler() {
 
 
 
-const surprisePromises = []
-startsFetchingSurprise(audios, surprisePromises)
+const surprisePromises = startsFetchingSurprise(audios)
 
 
 
@@ -122,8 +120,9 @@ surbriseBtn.addEventListener('click', async () => {
 async function surprise(event) {
   event.stopPropagation()
 
-  await whilePending(surprisePromises, () =>
-    h1s[1].innerHTML = spanLetters('… ›_~ …'))
+  await whilePending(surprisePromises, () => {
+    h1s[1].innerHTML = spanLetters('… ›_~ …')
+  })
 
   h1s[1].style.fontSize = '1px';
 
@@ -135,13 +134,15 @@ async function surprise(event) {
     })
   })
 
+  const mediaPromise = attachMedias(main)
+
   await sleep(1000)
   audios.intro.pause()
   audios.intro.currentTime = 0
   delete audios.intro
   delete audios.click
 
-  h1s[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)';
+  h1s[1].style.fontSize = 'clamp(1.4rem, 8vw, 4rem)'
 
   for (const h1 of h1s) {
     h1.style.transform = 'scale(0)'
@@ -177,6 +178,10 @@ async function surprise(event) {
   )
 
   await sleep(9000)
+  whilePending(mediaPromise, () => {
+    //just wait
+  })
+
   showMedias()
 }
 
@@ -217,12 +222,20 @@ async function whilePending(promises, callback) {
 }
 
 async function promisesState(promises) {
-  const status = new Set()
-
-  for (const promise of promises) {
-    const t = {}, state = await Promise.race([promise, t])
+  if (!Array.isArray(promises) && promises instanceof Promise) {
+    const t = {}
+    return await Promise.race([promises, t])
       .then(v => v === t ? 'pending' : 'fulfilled')
       .catch(() => 'rejected')
+  }
+
+  const status = new Set()
+
+  for (const p of promises) {
+    const t = {},
+      state = await Promise.race([p, t])
+        .then(v => v === t ? 'pending' : 'fulfilled')
+        .catch(() => 'rejected')
 
     if (state == 'rejected') return 'rejected'
 
