@@ -1,5 +1,7 @@
 export { startsFetchingIntro, startsFetchingSurprise }
 
+import partyUrl from './../src/party.min.js?url'
+
 import audioClick from './assets/click.wav'
 import audioFalse from './assets/false.wav'
 import audioTrue from './assets/true.wav'
@@ -8,6 +10,8 @@ import audioFireworks from './assets/fireworks.wav'
 import audioBoom from './assets/boom.wav'
 import audioIntro from './assets/intro.mp3'
 import audioBirthday from './assets/birthday.mp3'
+
+
 
 
 function startsFetchingIntro(audios, introPromises) {
@@ -40,7 +44,7 @@ function startsFetchingSurprise(audios, surprisePromises) {
 
   const script = document.createElement('script')
   script.async = true
-  script.src = './../src/party.min.js'
+  script.src = partyUrl
   document.head.appendChild(script)
 
   surprisePromises.push(
