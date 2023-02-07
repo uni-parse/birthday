@@ -111,6 +111,9 @@ surbriseBtn.addEventListener('click', async () => {
 }, { once: true })
 
 
+
+
+
 async function surprise(event) {
   event.stopPropagation()
 

@@ -12,8 +12,9 @@
     "postcss-preset-env": "^7.5.0",
     "sass": "^1.51.0",
     "sharp": "^0.30.6",
-    "vite": "^2.9.7",
-    "vite-imagetools": "^4.0.3"
+    "vite": "^2.9.9",
+    "vite-imagetools": "^4.0.3",
+    "vite-plugin-top-level-await": "^1.2.4"
   },
   "browserslist": [
     "last 2 versions and >= 1% and not IE <= 11"
