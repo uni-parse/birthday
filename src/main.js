@@ -1,6 +1,4 @@
-// ★▶►▬•»›▲♥⚠️💡±×÷²√π⁰≠≈≤≥Ø∞✓✗✖ € ← → ↑ ↓ ⇆♪©Ⓓ†₱…
 import './sass/main.scss'
-
 import { attachMedias, showMedias } from './mediaIcons'
 import { startsFetchingIntro, startsFetchingSurprise } from './assets'
 
@@ -66,7 +64,7 @@ select.addEventListener('change', function handler() {
 
   select.removeEventListener('change', handler)
 
-  select.disabled = true
+  select.remove()
   outputs[0].style.color = 'greenyellow'
   outputs[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
 
@@ -83,7 +81,7 @@ date.addEventListener('change', function handler() {
 
   date.removeEventListener('change', handler)
 
-  date.disabled = true
+  date.remove()
   outputs[1].style.color = 'greenyellow'
   outputs[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
 
