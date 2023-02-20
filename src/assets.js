@@ -1,5 +1,5 @@
-export { startsFetchingIntro, startsFetchingSurprise }
 export const audios = {}
+export { startsFetchingIntro, startsFetchingSurprise }
 
 import musicIntro from './assets/intro.mp3'
 import audioClick from './assets/click.wav'
@@ -23,7 +23,7 @@ function startsFetchingIntro() {
   audios.intro.loop = true
 
   const promises = [
-    getEventPromise(window, 'load'),
+    //getEventPromise(window, 'load'),
     getEventPromise(audios.intro, 'canplaythrough'),
   ]
 

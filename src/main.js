@@ -7,42 +7,42 @@ import { dialogListener } from './dialog_listener'
 const main = document.createElement('main')
 document.body.append(main)
 
-const stars = [], star = document.createElement('div')
-for (let i = 1; i <= 3; i++) {
-  const star_clone = star.cloneNode()
-  star_clone.id = `stars${i}`
-  stars.push(star_clone)
+//background of 3 stars with multi box-shadow
+const stars = []
+for (const i of [1, 2, 3]) {
+  const star = document.createElement('div')
+  star.id = `star${i}`
+  stars.push(star)
 }
 main.append(...stars)
 
 
+//start fetching audios: click true false success intro
+const introPromises = startsFetchingIntro()
+await sleep(500)//wait for audio buffer|decode even if cached
 
 
-const h1 = document.createElement('h1')
-const h1s = [h1, h1.cloneNode()]
 
 const surprise = document.createElement('div')
 surprise.id = 'surprise'
-surprise.append(...h1s)
-
 main.append(surprise)
 
+const h1s = [];
+[1, 2].forEach(() => h1s.push(document.createElement('h1')))
+surprise.append(...h1s)
 
 
-
-
-const introPromises = startsFetchingIntro()
-
-await sleep(500)//wait for audio buffer|decode even if cached
-let loading
-await whilePending(introPromises, () => {
-  h1s[1].innerHTML = spanLetters('loading…')
-  loading = true
-})
+await whilePending(introPromises, 
+  () => h1s[1].innerHTML = spanLetters('loading…'))
 
 h1s[1].style.transform = 'scale(0)'
-if (loading) await sleep(500) //animation duration
-h1s[1].innerText = ''
+if (h1s[1].innerHtml) { // loading
+  await sleep(500) //animation duration
+  h1s[1].innerHtml = '' 
+}
+
+//start fetching party.min.js & audios: boom birthday fireworks
+const surprisePromises = startsFetchingSurprise()
 
 
 main.append(dialog)
@@ -53,10 +53,6 @@ dialogListener()
 
 
 
-
-
-
-const surprisePromises = startsFetchingSurprise()
 
 const lockBtn = dialog.querySelector('button')
 lockBtn.addEventListener('click', async () => {
@@ -134,7 +130,7 @@ async function surpriseHandler() {
 
   await sleep(150)
   stars.forEach((star, i) => star.style.animation =
-    `stars${i + 1} 60s ease-in-out infinite alternate`
+    `star${i + 1} 60s ease-in-out infinite alternate`
   )
 
   await sleep(9000)
