@@ -1,18 +1,22 @@
 import './sass/main.scss'
 import { attachMedias, showMedias } from './mediaIcons'
 import { audios, startsFetchingIntro, startsFetchingSurprise } from './assets'
-import { dialog, dialogListener } from './dialog'
+import { dialog } from './dialog'
+import { dialogListener } from './dialog_listener'
 
 const main = document.createElement('main')
-main.innerHTML = `
-  <div id=stars1></div>
-  <div id=stars2></div>
-  <div id=stars3></div>
-`
-
 document.body.append(main)
 
-const stars = main.querySelectorAll('#stars1, #stars2, #stars3')
+const stars = [], star = document.createElement('div')
+for (let i = 1; i <= 3; i++) {
+  const star_clone = star.cloneNode()
+  star_clone.id = `stars${i}`
+  stars.push(star_clone)
+}
+main.append(...stars)
+
+
+
 
 const h1 = document.createElement('h1')
 const h1s = [h1, h1.cloneNode()]
