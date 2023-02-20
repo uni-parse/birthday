@@ -1,29 +1,33 @@
 import './sass/main.scss'
 import { attachMedias, showMedias } from './mediaIcons'
-import { startsFetchingIntro, startsFetchingSurprise } from './assets'
+import { audios, startsFetchingIntro, startsFetchingSurprise } from './assets'
+import { dialog, dialogListener } from './dialog'
 
 const main = document.createElement('main')
 main.innerHTML = `
   <div id=stars1></div>
   <div id=stars2></div>
   <div id=stars3></div>
-
-  <div id=birthday>
-    <h1></h1>
-    <h1></h1>
-  </div>`
+`
 
 document.body.append(main)
 
-const
-  stars = main.querySelectorAll('#stars1, #stars2, #stars3'),
-  birthday = main.querySelector('#birthday'),
-  h1s = birthday.querySelectorAll('h1')
+const stars = main.querySelectorAll('#stars1, #stars2, #stars3')
+
+const h1 = document.createElement('h1')
+const h1s = [h1, h1.cloneNode()]
+
+const surprise = document.createElement('div')
+surprise.id = 'surprise'
+surprise.append(...h1s)
+
+main.append(surprise)
 
 
-const audios = {},
-  introPromises = startsFetchingIntro(audios)
 
+
+
+const introPromises = startsFetchingIntro()
 
 await sleep(500)//wait for audio buffer|decode even if cached
 let loading
@@ -37,65 +41,21 @@ if (loading) await sleep(500) //animation duration
 h1s[1].innerText = ''
 
 
-
-const
-  dialog = document.body.querySelector('dialog'),
-  select = dialog.querySelector('select'),
-  date = dialog.querySelector('input[type=date]'),
-  outputs = dialog.querySelectorAll('output'),
-  surbriseBtn = dialog.querySelector('button')
-
-
+main.append(dialog)
 dialog.style.transform = 'scale(0)'
 dialog.showModal()
 dialog.style.transform = 'scale(1)'
-
-dialog.addEventListener('click', () => audios.click.play())
-dialog.addEventListener('click', () => audios.intro.play(),
-  { once: true })
-
-select.addEventListener('change', function handler() {
-  if (select.value != 2014) {
-    outputs[0].style.color = 'darkorange'
-    outputs[0].innerHTML = `Ops😅 we meet on <span>2014 ✓</span><br>not <span>${select.value}✗</span> !!`
-    audios.false.play()
-    return
-  }
-
-  select.removeEventListener('change', handler)
-
-  select.remove()
-  outputs[0].style.color = 'greenyellow'
-  outputs[0].innerHTML = `Yes😁 <b>2014 ✓</b><br>it\'s was awesome ${(new Date().getFullYear()) - 2014} years of <b>friendship</b>!!`
-
-  unlockDialog()
-})
-
-date.addEventListener('change', function handler() {
-  if (date.value != '2000-01-15') {
-    outputs[1].style.color = 'darkorange'
-    outputs[1].innerHTML = `Ops😅 my birthday on <span>15<sup><small>th</small></sup> january ✓</span> <br>not <span>${date.value}✗</span> !!`
-    audios.false.play()
-    return
-  }
-
-  date.removeEventListener('change', handler)
-
-  date.remove()
-  outputs[1].style.color = 'greenyellow'
-  outputs[1].innerHTML = 'Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
-
-  unlockDialog()
-})
+dialogListener()
 
 
 
 
-const surprisePromises = startsFetchingSurprise(audios)
 
 
+const surprisePromises = startsFetchingSurprise()
 
-surbriseBtn.addEventListener('click', async () => {
+const lockBtn = dialog.querySelector('button')
+lockBtn.addEventListener('click', async () => {
   dialog.style.transform = 'scale(0)'
 
   await sleep(500)
@@ -104,7 +64,7 @@ surbriseBtn.addEventListener('click', async () => {
   h1s[1].innerHTML = spanLetters('›_~')
   h1s[1].style.transform = 'scale(1)'
 
-  birthday.addEventListener('click', surprise, { once: true })
+  surprise.addEventListener('click', surpriseHandler, { once: true })
 
   await sleep(500)
   for (const h1 of h1s) h1.style.animation =
@@ -115,9 +75,7 @@ surbriseBtn.addEventListener('click', async () => {
 
 
 
-async function surprise(event) {
-  event.stopPropagation()
-
+async function surpriseHandler() {
   await whilePending(surprisePromises, () => {
     h1s[1].innerHTML = spanLetters('… ›_~ …')
   })
@@ -184,6 +142,8 @@ async function surprise(event) {
 }
 
 
+
+
 //halpers
 
 function sleep(ms) {
@@ -195,22 +155,6 @@ function spanLetters(str) {
     ? spans + ' '
     : spans + `<span>${char}</span>`
     , '')
-}
-
-function unlockDialog() {
-  if (!(date.value == '2000-01-15' && select.value == 2014)) {
-    audios.true.play().addEventListener('ended', () =>
-      delete audios.true, { once: true })
-    return
-  }
-
-  delete audios.false
-  audios.success.play().addEventListener('ended', () =>
-    delete audios.success, { once: true })
-
-  surbriseBtn.disabled = false
-  surbriseBtn.innerText = 'Unlocked'
-  surbriseBtn.dataset.lock = '🔑'
 }
 
 async function whilePending(promises, callback) {
@@ -242,4 +186,3 @@ async function promisesState(promises) {
 
   return status.has('pending') ? 'pending' : 'fulfilled'
 }
-

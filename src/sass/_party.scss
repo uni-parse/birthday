@@ -1,7 +1,7 @@
 @use './stars';
 @use 'sass:color';
 
-#birthday {
+#surprise {
   display: flex;
   flex-flow: column nowrap;
   place-content: center;
@@ -18,7 +18,8 @@ $offset2: -0.08em;
 $blur: 1.5px;
 $c1: color.adjust(#f0f, $lightness: 6%, $hue: 25);
 $c2: color.adjust(#0ff, $hue: 20);
-h1 {
+
+#surprise h1 {
   position: relative;
   bottom: 10vh;
   opacity: 1;
@@ -31,33 +32,24 @@ h1 {
   font: 500 clamp(1.4rem, 8vw, 4rem) 'Henny Penny', cursive;
   line-height: 0.3em;
   cursor: pointer;
-  &::selection , ::selection {
+
+  &::selection,
+  ::selection {
     background-color: transparent;
     color: #e0dd0c;
-  }
-  span {
-    transition: font-size .7s ease-out,color .7s ease-out;
-    &:nth-child(2n):hover {
-      //font-weight: 900;
-      font-size: 1.2em;
-      color: $c1;
-    }
-    &:nth-child(2n + 1):hover {
-      //font-weight: 900;
-      font-size: 1.2em;
-      color: $c2;
-    }
   }
 
   &:active {
     cursor: grabbing;
   }
+
   &:first-of-type {
     &::before,
     &::after {
       content: attr(data-content);
     }
   }
+
   &:last-of-type {
     &::before {
       content: attr(data-content-before);
@@ -67,6 +59,23 @@ h1 {
     }
   }
 }
+
+#surprise h1 span {
+  transition: font-size 0.7s ease-out, color 0.7s ease-out;
+
+  &:nth-child(2n):hover {
+    //font-weight: 900;
+    font-size: 1.2em;
+    color: $c1;
+  }
+
+  &:nth-child(2n + 1):hover {
+    //font-weight: 900;
+    font-size: 1.2em;
+    color: $c2;
+  }
+}
+
 @keyframes hb {
   to {
     opacity: 0.7;

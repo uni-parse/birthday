@@ -1,4 +1,5 @@
 export { startsFetchingIntro, startsFetchingSurprise }
+export const audios = {}
 
 import musicIntro from './assets/intro.mp3'
 import audioClick from './assets/click.wav'
@@ -12,7 +13,7 @@ import audioFireworks from './assets/fireworks.wav'
 
 import partyUrl from './assets/party.min.js?url'
 
-function startsFetchingIntro(audios) {
+function startsFetchingIntro() {
   audios.click = fetchAudio(audioClick)
   audios.true = fetchAudio(audioTrue)
   audios.false = fetchAudio(audioFalse)
@@ -32,7 +33,7 @@ function startsFetchingIntro(audios) {
   return promises
 }
 
-function startsFetchingSurprise(audios) {
+function startsFetchingSurprise() {
   audios.fireworks = fetchAudio(audioFireworks)
   audios.boom = fetchAudio(audioBoom)
 
