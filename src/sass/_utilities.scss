@@ -1,6 +1,7 @@
 @function size($width, $height) {
   @return (width: $width, height: $height);
 }
+
 @mixin size($w,$h:$w){
   width: $w;
   height: $h;

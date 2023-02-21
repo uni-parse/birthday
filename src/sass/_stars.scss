@@ -23,7 +23,7 @@ $shadows: multipleBoxShadow(600, (100 + list.nth($height, 3))),
     border-radius: 50%;
     background: transparent;
     box-shadow: list.nth($shadows, $i);
-    
+
     ::after {
       content: ' ';
       position: fixed;

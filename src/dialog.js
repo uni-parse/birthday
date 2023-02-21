@@ -1,8 +1,8 @@
 export const dialog = document.createElement('dialog')
-
+//mechid
 dialog.innerHTML = `
   <form method=dialog>
-    <h3>😎Hi mechid✨</h3>
+    <h3>😎Hi uniParse✨</h3>
     <p>I create for u a Gift🎁</p>
     <details>
       <summary>
