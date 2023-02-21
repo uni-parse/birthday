@@ -7,7 +7,7 @@ function sleep(ms) {
 async function whilePending(promises, callback) {
   if (await promisesState(promises) != 'pending') return false
 
-  callback()
+  await callback()
   await Promise.all(promises)
   return true
 }

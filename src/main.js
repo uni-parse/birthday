@@ -31,12 +31,11 @@ loaderCtx.style.transition =
   `transform ${loaderTransitionDuration}ms`
 loaderCtx.style.transform = 'scale(0)'
 
-const loading = await whilePending(introPromises, async () => {
+let loading = await whilePending(introPromises, async () => {
   main.append(loaderCtx)
   await sleep(loaderTransitionDuration)
   loaderCtx.style.transform = 'scale(1)'
-}
-)
+})
 
 if (loading) {
   loaderCtx.style.transform = 'scale(0)'
@@ -82,19 +81,33 @@ dialog.remove()
 
 heading.innerHTML = spanLetters('›_~')
 heading.style.transform = 'scale(1)'
-
-await sleep(500)
-heading.className = 'animated'
-
-
+await sleep(500) //h1 transition duration
+heading.className = 'animated' //⚠️transforrm: rotate() scale()
 
 await getEventPromise(document, 'click')
 
-await whilePending(surprisePromises, () => {
-  heading.innerHTML = spanLetters('… ›_~ …')
+loading = await whilePending(surprisePromises, async () => {
+  heading.style.fontSize = 0
+  await sleep(500) //h1 transition duration
+
+  main.append(loaderCtx)
+  await sleep(loaderTransitionDuration)
+  loaderCtx.style.transform = 'scale(1)'
 })
 
-heading.style.fontSize = '1px';
+if (loading) {
+  loaderCtx.style.transform = 'scale(0)'
+  await sleep(loaderTransitionDuration)
+  loaderCtx.remove()
+} else {
+  heading.style.fontSize = 0
+  await sleep(500) //h1 transition duration
+}
+
+
+
+//start fetching media svgs & 2 images
+const mediaPromise = attachMedias(main)
 
 //on click: show party sparkles & play fireworks audio
 document.addEventListener('click', e => {
@@ -105,10 +118,7 @@ document.addEventListener('click', e => {
   })
 })
 
-//start fetching media svgs & 2 images
-const mediaPromise = attachMedias(main)
-
-await sleep(1000)
+await sleep(500) //h1 transition duration
 audios.intro.pause()
 audios.intro.currentTime = 0
 delete audios.intro
@@ -117,6 +127,7 @@ delete audios.click
 
 heading.classList.remove('animated')
 heading.style.fontSize = 'clamp(1.4rem, 8vw, 4rem)'
+
 
 const heading2 = document.createElement('h1')
 heading.style.transform = 'scale(0)'

@@ -23,6 +23,6 @@ dialog.innerHTML = `
       <label>which day I <em>born</em>?
         <input type=date value='2000-01-29' required>
       </label><br>
-      <button type=button disabled data-lock='🔒'>Locked</button>
+      <button type=button data-lock='🔒'>Locked</button>
     </details>
   </form>`

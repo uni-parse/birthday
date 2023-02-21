@@ -49,6 +49,7 @@ function startsFetchingSurprise() {
   document.head.append(script)
 
   const promises = [
+    //new Promise(rs=>setTimeout(rs,10000)),
     getEventPromise(script, 'load'),
     getEventPromise(audios.birthday, 'canplaythrough')
   ]
