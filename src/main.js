@@ -68,8 +68,14 @@ surprise.id = 'surprise'
 main.append(surprise)
 
 const heading = document.createElement('h1')
+const h1TransitionDuration = 500
+heading.style.transition = `all ${h1TransitionDuration}ms`
 heading.style.transform = 'scale(0)'
 surprise.append(heading)
+
+
+
+
 
 const dialogBtn = dialog.querySelector('button')
 await getEventPromise(dialogBtn, 'click')
@@ -81,14 +87,20 @@ dialog.remove()
 
 heading.innerHTML = spanLetters('›_~')
 heading.style.transform = 'scale(1)'
-await sleep(500) //h1 transition duration
+await sleep(h1TransitionDuration)
 heading.className = 'animated' //⚠️transforrm: rotate() scale()
+
+
+
+
 
 await getEventPromise(document, 'click')
 
+heading.classList.remove('animated')
+
 loading = await whilePending(surprisePromises, async () => {
   heading.style.fontSize = 0
-  await sleep(500) //h1 transition duration
+  await sleep(h1TransitionDuration)
 
   main.append(loaderCtx)
   await sleep(loaderTransitionDuration)
@@ -101,7 +113,7 @@ if (loading) {
   loaderCtx.remove()
 } else {
   heading.style.fontSize = 0
-  await sleep(500) //h1 transition duration
+  await sleep(h1TransitionDuration)
 }
 
 
@@ -118,27 +130,23 @@ document.addEventListener('click', e => {
   })
 })
 
-await sleep(500) //h1 transition duration
+await sleep(500) //??
 audios.intro.pause()
 audios.intro.currentTime = 0
 delete audios.intro
 delete audios.click
 
-
-heading.classList.remove('animated')
-heading.style.fontSize = 'clamp(1.4rem, 8vw, 4rem)'
-
+heading.textContent = ''
+heading.style.fontSize = ''
 
 const heading2 = document.createElement('h1')
-heading.style.transform = 'scale(0)'
+heading2.style.transition = `all ${h1TransitionDuration}ms`
 surprise.append(heading2)
 
 const h1s = [heading, heading2]
-for (const h1 of h1s) {
-  h1.style.transform = 'scale(0)'
-}
-
+for (const h1 of h1s) h1.style.transform = 'scale(0)'
 await sleep(500)
+
 heading.innerHTML = spanLetters('Happy Birthday')
 heading2.innerHTML = spanLetters('Mechid')
 
@@ -156,8 +164,8 @@ party.confetti(heading2, {
 })
 
 for (const h1 of h1s) h1.style.transform = 'scale(1)'
-
 await sleep(350)
+
 for (const h1 of h1s) h1.classList.add('animated')
 
 await sleep(150)

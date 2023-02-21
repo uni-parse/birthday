@@ -29,7 +29,6 @@ $magenta: color.adjust(#0ff, $hue: 20);
   color: #fffc;
   text-shadow: $offset1 $offset1 $blur $cyan,
     $offset2 $offset2 $blur $magenta;
-  transition: all 500ms;
   font: 500 clamp(1.4rem, 8vw, 4rem) 'Henny Penny', cursive;
   line-height: 0.3em;
   cursor: pointer;
