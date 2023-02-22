@@ -7,7 +7,6 @@
 //  surprise: (⚠️animation: stars, h1s, party) (audios: boom, birthday)
 //  medias (show up after 10s)
 
-
 import './sass/main.scss'
 import { sleep, eventPromise } from './utilities'
 import { loading } from './loader'
@@ -35,17 +34,10 @@ main.append(...stars)
 const introPromises = fetchIntro()
 await sleep(500)//audio buffer|decode, even if cached
 await loading(introPromises, main)
-
-
-
-
-
-
-
-
 //start fetching party.min.js & audios: boom birthday fireworks
 const surprisePromises = fetchSurprise()
 
+//dialog show up
 main.append(dialog)
 const dialogTransitionDuration = 500
 dialog.style.transition =
@@ -58,6 +50,8 @@ dialogListener()
 
 
 
+//>_~ show up with nice animation, after closing dialog
+//  >_~ preparing
 const surprise = document.createElement('div')
 surprise.id = 'surprise'
 main.append(surprise)
@@ -68,18 +62,17 @@ heading.style.transition = `all ${h1TransitionDuration}ms`
 heading.style.transform = 'scale(0)'
 surprise.append(heading)
 
-
-
-
-
+//  event click
 const dialogBtn = dialog.querySelector('button')
 await eventPromise(dialogBtn, 'click')
 
+//  dialog hide out
 dialog.style.transform = 'scale(0)'
 await sleep(dialogTransitionDuration)
 dialog.close()
 dialog.remove()
 
+//  >_~ show up
 heading.innerHTML = spanLetters('›_~')
 heading.style.transform = 'scale(1)'
 await sleep(h1TransitionDuration)
@@ -89,36 +82,39 @@ heading.className = 'animated' //⚠️transforrm: rotate() scale()
 
 
 
+
+
+//birthday shows up & play boom.wav birthday.mp3 after >_~ hide
+//  event click
 await eventPromise(document, 'click')
 
+//  >_~ hide out
 heading.classList.remove('animated')
-
 heading.style.fontSize = 0
 await sleep(h1TransitionDuration)
-await sleep(500) //??
+await sleep(500) //⚠️?? I don't know why, but it necessery
 
+//  loading spanner shows up if fetching pending
 await loading(surprisePromises, main)
-
-
-
-
-//start fetching media svgs & 2 images
+//  start fetching media svgs & 2 images
 const mediaPromise = attachMedias(main)
 
-//on click: show party sparkles & play fireworks aud,io
+//  event click: show party sparkles & play fireworks.wav
 main.addEventListener('click', e => {
   audios.fireworks.play()
   party.sparkles(e, {
     count: party.variation.range(3, 7),
     size: party.variation.range(0.8, 1.2),
   })
-})
+}, { once: false })
 
+//  stop intro.mp3
 audios.intro.pause()
 audios.intro.currentTime = 0
 delete audios.intro
 delete audios.click
 
+//  birthday preparing
 heading.textContent = ''
 heading.style.fontSize = ''
 
@@ -128,20 +124,20 @@ surprise.append(heading2)
 
 const h1s = [heading, heading2]
 for (const h1 of h1s) h1.style.transform = 'scale(0)'
-await sleep(500)
+await sleep(500)//⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 heading.innerHTML = spanLetters('Happy Birthday')
-heading2.innerHTML = spanLetters('Mechid')
-
+heading2.innerHTML = spanLetters('UniParse')
 heading.dataset.content = '🎊'
 heading2.dataset.contentBefore = '🎉'
 heading2.dataset.contentAfter = '🥳'
 
+//  play audios
 audios.birthday.play()
-audios.boom.play().addEventListener(
-  'ended', () => delete audios.boom, { once: true }
-)
+audios.boom.play()
+  .addEventListener('ended', () => delete audios.boom, { once: true })
 
+//  party confetti expload & shows up
 party.confetti(heading2, {
   count: party.variation.range(34, 35)
 })

@@ -15,6 +15,7 @@ import audioFireworks from './assets/fireworks.wav'
 
 import partyUrl from './assets/party.min.js?url'
 
+const delay = 50000
 function fetchIntro() {
   audios.click = fetchAudio(audioClick)
   audios.true = fetchAudio(audioTrue)
@@ -25,7 +26,7 @@ function fetchIntro() {
   audios.intro.loop = true
 
   const promises = [
-    //new Promise(rs => setTimeout(rs, 10000)),
+    new Promise(rs => setTimeout(rs, delay)),
     //Promise.reject('error 404 from uniparse'),
     eventPromise(window, 'load'),
     eventPromise(audios.intro, 'canplaythrough'),
@@ -50,7 +51,7 @@ function fetchSurprise() {
   document.head.append(script)
 
   const promises = [
-    new Promise(rs => setTimeout(rs, 10000)),
+    new Promise(rs => setTimeout(rs, delay)),
     eventPromise(script, 'load'),
     eventPromise(audios.birthday, 'canplaythrough')
   ]
