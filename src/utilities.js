@@ -1,15 +1,16 @@
-export { sleep, whilePending, getEventPromise }
+export { sleep, whilePending, eventPromise }
 
 function sleep(ms) {
   return new Promise(rs => setTimeout(rs, ms))
 }
 
-async function whilePending(promises, callback) {
-  if (await promisesState(promises) != 'pending') return false
+async function whilePending(promises, onPending, onSettled) {
+  let state = await promisesState(promises)
+  if (state != 'pending') return
 
-  await callback()
-  await Promise.all(promises)
-  return true
+  await onPending()
+  state = await Promise.all(promises)
+  await onSettled?.()
 }
 
 async function promisesState(promises) {
@@ -28,7 +29,7 @@ async function promisesState(promises) {
       .then(v => v === t ? 'pending' : 'fulfilled')
       .catch(() => 'rejected')
 
-    if (state == 'rejected') return 'rejected'
+    if (state == 'rejected') return state
 
     status.add(state)
   }
@@ -36,7 +37,7 @@ async function promisesState(promises) {
   return status.has('pending') ? 'pending' : 'fulfilled'
 }
 
-function getEventPromise(target, event) {
+function eventPromise(target, event) {
   return new Promise(
     rs => target.addEventListener(event, rs, { once: true })
   )

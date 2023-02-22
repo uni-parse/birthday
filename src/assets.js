@@ -1,7 +1,7 @@
 export const audios = {}
-export { startsFetchingIntro, startsFetchingSurprise }
+export { fetchIntro, fetchSurprise }
 
-import { getEventPromise } from './utilities'
+import { eventPromise } from './utilities'
 
 import musicIntro from './assets/intro.mp3'
 import audioClick from './assets/click.wav'
@@ -15,7 +15,7 @@ import audioFireworks from './assets/fireworks.wav'
 
 import partyUrl from './assets/party.min.js?url'
 
-function startsFetchingIntro() {
+function fetchIntro() {
   audios.click = fetchAudio(audioClick)
   audios.true = fetchAudio(audioTrue)
   audios.false = fetchAudio(audioFalse)
@@ -25,9 +25,10 @@ function startsFetchingIntro() {
   audios.intro.loop = true
 
   const promises = [
-    //new Promise(rs=>setTimeout(rs,5000)),
-    getEventPromise(window, 'load'),
-    getEventPromise(audios.intro, 'canplaythrough'),
+    //new Promise(rs => setTimeout(rs, 10000)),
+    //Promise.reject('error 404 from uniparse'),
+    eventPromise(window, 'load'),
+    eventPromise(audios.intro, 'canplaythrough'),
   ]
 
   for (const a in audios) if (a != 'intro')
@@ -36,7 +37,7 @@ function startsFetchingIntro() {
   return promises
 }
 
-function startsFetchingSurprise() {
+function fetchSurprise() {
   audios.fireworks = fetchAudio(audioFireworks)
   audios.boom = fetchAudio(audioBoom)
 
@@ -49,9 +50,9 @@ function startsFetchingSurprise() {
   document.head.append(script)
 
   const promises = [
-    //new Promise(rs=>setTimeout(rs,10000)),
-    getEventPromise(script, 'load'),
-    getEventPromise(audios.birthday, 'canplaythrough')
+    new Promise(rs => setTimeout(rs, 10000)),
+    eventPromise(script, 'load'),
+    eventPromise(audios.birthday, 'canplaythrough')
   ]
 
   for (let a in audios) if ('boom fireworks'.includes(a))
@@ -81,4 +82,3 @@ async function fetchAudio(url) {
 
   return { play }
 }
-

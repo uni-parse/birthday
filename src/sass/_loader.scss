@@ -15,7 +15,7 @@ $size: 10vmin;
   height: 100%;
   background: radial-gradient(transparent, $magenta);
   border: solid $magenta;
-  outline: solid $cyan;
+  outline: solid $cyan calc($size * 0.05);
   box-shadow: 0 0 calc($size / 3) $cyan;
   border-radius: 50%;
   animation: loaderEllipseAnimation 2s linear infinite;

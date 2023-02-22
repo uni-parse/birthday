@@ -1,10 +1,20 @@
+//summary:
+//  initiate
+//  loading (intro fetching audios: click false true success intro)
+//  dialog (questions)
+//  >_~ (nice animation)
+//  loading: (surprise fetching party, audios: boom fireworks birthday)
+//  surprise: (⚠️animation: stars, h1s, party) (audios: boom, birthday)
+//  medias (show up after 10s)
+
+
 import './sass/main.scss'
-import { attachMedias, showMedias } from './mediaIcons'
-import { audios, startsFetchingIntro, startsFetchingSurprise } from './assets'
+import { sleep, eventPromise } from './utilities'
+import { loading } from './loader'
 import { dialog } from './dialog'
 import { dialogListener } from './dialog_listener'
-import { loaderCtx } from './loader'
-import { sleep, whilePending, getEventPromise } from './utilities'
+import { attachMedias, showMedias } from './mediaIcons'
+import { audios, fetchIntro, fetchSurprise } from './assets'
 
 const main = document.createElement('main')
 document.body.append(main)
@@ -21,27 +31,12 @@ for (const i of [1, 2, 3]) {
 main.append(...stars)
 
 
-
 //start fetching audios: click true false success intro
-const introPromises = startsFetchingIntro()
+const introPromises = fetchIntro()
 await sleep(500)//audio buffer|decode, even if cached
+await loading(introPromises, main)
 
-const loaderTransitionDuration = 1000
-loaderCtx.style.transition =
-  `transform ${loaderTransitionDuration}ms`
-loaderCtx.style.transform = 'scale(0)'
 
-let loading = await whilePending(introPromises, async () => {
-  main.append(loaderCtx)
-  await sleep(loaderTransitionDuration)
-  loaderCtx.style.transform = 'scale(1)'
-})
-
-if (loading) {
-  loaderCtx.style.transform = 'scale(0)'
-  await sleep(loaderTransitionDuration)
-  loaderCtx.remove()
-}
 
 
 
@@ -49,7 +44,7 @@ if (loading) {
 
 
 //start fetching party.min.js & audios: boom birthday fireworks
-const surprisePromises = startsFetchingSurprise()
+const surprisePromises = fetchSurprise()
 
 main.append(dialog)
 const dialogTransitionDuration = 500
@@ -78,7 +73,7 @@ surprise.append(heading)
 
 
 const dialogBtn = dialog.querySelector('button')
-await getEventPromise(dialogBtn, 'click')
+await eventPromise(dialogBtn, 'click')
 
 dialog.style.transform = 'scale(0)'
 await sleep(dialogTransitionDuration)
@@ -94,35 +89,24 @@ heading.className = 'animated' //⚠️transforrm: rotate() scale()
 
 
 
-await getEventPromise(document, 'click')
+await eventPromise(document, 'click')
 
 heading.classList.remove('animated')
 
-loading = await whilePending(surprisePromises, async () => {
-  heading.style.fontSize = 0
-  await sleep(h1TransitionDuration)
+heading.style.fontSize = 0
+await sleep(h1TransitionDuration)
+await sleep(500) //??
 
-  main.append(loaderCtx)
-  await sleep(loaderTransitionDuration)
-  loaderCtx.style.transform = 'scale(1)'
-})
+await loading(surprisePromises, main)
 
-if (loading) {
-  loaderCtx.style.transform = 'scale(0)'
-  await sleep(loaderTransitionDuration)
-  loaderCtx.remove()
-} else {
-  heading.style.fontSize = 0
-  await sleep(h1TransitionDuration)
-}
 
 
 
 //start fetching media svgs & 2 images
 const mediaPromise = attachMedias(main)
 
-//on click: show party sparkles & play fireworks audio
-document.addEventListener('click', e => {
+//on click: show party sparkles & play fireworks aud,io
+main.addEventListener('click', e => {
   audios.fireworks.play()
   party.sparkles(e, {
     count: party.variation.range(3, 7),
@@ -130,7 +114,6 @@ document.addEventListener('click', e => {
   })
 })
 
-await sleep(500) //??
 audios.intro.pause()
 audios.intro.currentTime = 0
 delete audios.intro
