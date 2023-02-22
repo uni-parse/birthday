@@ -15,7 +15,7 @@ import audioFireworks from './assets/fireworks.wav'
 
 import partyUrl from './assets/party.min.js?url'
 
-const delay = 50000
+const delay = 0
 function fetchIntro() {
   audios.click = fetchAudio(audioClick)
   audios.true = fetchAudio(audioTrue)

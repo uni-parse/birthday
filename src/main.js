@@ -19,7 +19,6 @@ const main = document.createElement('main')
 document.body.append(main)
 
 
-
 //background of 3 stars with multi box-shadow
 const stars = []
 for (const i of [1, 2, 3]) {
@@ -56,11 +55,11 @@ const surprise = document.createElement('div')
 surprise.id = 'surprise'
 main.append(surprise)
 
-const heading = document.createElement('h1')
+const h1 = document.createElement('h1')
 const h1TransitionDuration = 500
-heading.style.transition = `all ${h1TransitionDuration}ms`
-heading.style.transform = 'scale(0)'
-surprise.append(heading)
+h1.style.transition = `all ${h1TransitionDuration}ms`
+h1.style.transform = 'scale(0)'
+surprise.append(h1)
 
 //  event click
 const dialogBtn = dialog.querySelector('button')
@@ -73,10 +72,10 @@ dialog.close()
 dialog.remove()
 
 //  >_~ show up
-heading.innerHTML = spanLetters('›_~')
-heading.style.transform = 'scale(1)'
+h1.innerHTML = spanLetters('›_~')
+h1.style.transform = 'scale(1)'
 await sleep(h1TransitionDuration)
-heading.className = 'animated' //⚠️transforrm: rotate() scale()
+h1.className = 'animated' //⚠️transforrm: rotate() scale()
 
 
 
@@ -89,10 +88,10 @@ heading.className = 'animated' //⚠️transforrm: rotate() scale()
 await eventPromise(document, 'click')
 
 //  >_~ hide out
-heading.classList.remove('animated')
-heading.style.fontSize = 0
+h1.classList.remove('animated')
+h1.style.fontSize = 0
 await sleep(h1TransitionDuration)
-await sleep(500) //⚠️?? I don't know why, but it necessery
+await sleep(500) //⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 //  loading spanner shows up if fetching pending
 await loading(surprisePromises, main)
@@ -115,43 +114,46 @@ delete audios.intro
 delete audios.click
 
 //  birthday preparing
-heading.textContent = ''
-heading.style.fontSize = ''
+h1.textContent = ''
+h1.style.fontSize = ''
 
-const heading2 = document.createElement('h1')
-heading2.style.transition = `all ${h1TransitionDuration}ms`
-surprise.append(heading2)
+const h1_2 = document.createElement('h1')
+h1_2.style.transition = `all ${h1TransitionDuration}ms`
+surprise.append(h1_2)
 
-const h1s = [heading, heading2]
+const h1s = [h1, h1_2]
 for (const h1 of h1s) h1.style.transform = 'scale(0)'
-await sleep(500)//⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+await sleep(h1TransitionDuration)//⚠️⚠️⚠️⚠️⚠️⚠️
 
-heading.innerHTML = spanLetters('Happy Birthday')
-heading2.innerHTML = spanLetters('UniParse')
-heading.dataset.content = '🎊'
-heading2.dataset.contentBefore = '🎉'
-heading2.dataset.contentAfter = '🥳'
+h1.innerHTML = spanLetters('Happy Birthday')
+h1_2.innerHTML = spanLetters('UniParse')
+h1.dataset.content = '🎊'
+h1_2.dataset.contentBefore = '🎉'
+h1_2.dataset.contentAfter = '🥳'
 
 //  play audios
 audios.birthday.play()
 audios.boom.play()
-  .addEventListener('ended', () => delete audios.boom, { once: true })
+  .addEventListener('ended',
+    () => delete audios.boom, { once: true })
 
 //  party confetti expload & shows up
-party.confetti(heading2, {
+party.confetti(h1_2, {
   count: party.variation.range(34, 35)
 })
 
+//  birthday thows up
 for (const h1 of h1s) h1.style.transform = 'scale(1)'
-await sleep(350)
-
+await sleep(350) //sync transition with animation
 for (const h1 of h1s) h1.classList.add('animated')
 
+//  animate background stars
 await sleep(150)
 stars.forEach((star, i) => star.style.animation =
   `star${i + 1} 60s ease-in-out infinite alternate`
 )
 
+//  show medias
 await sleep(9000)
 await mediaPromise
 showMedias()

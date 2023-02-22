@@ -1,5 +1,5 @@
+export { loading }
 import { sleep, whilePending } from "./utilities"
-export { loaderCtx, loading }
 
 const loaderCtx = document.createElement('div')
 loaderCtx.className = 'loaderCtx'
