@@ -41,7 +41,7 @@ main.append(...stars);
   await sleep(9000)
   await mediaPromise
   showMedias()
-})()
+})();
 
 function animateStarsBackground() {
   stars.forEach((star, i) => {
