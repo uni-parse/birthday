@@ -9,7 +9,7 @@ loader.className = 'loader'
 loaderCtx.append(loader)
 
 const transitionDuration = 1000
-loaderCtx.style.transition = `transform ${transitionDuration}ms`
+loaderCtx.style.transition = `all ${transitionDuration}ms`
 loaderCtx.style.transform = 'scale(0)'
 
 
