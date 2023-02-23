@@ -11,7 +11,7 @@ const h1s = [1, 2].map(() => document.createElement('h1'))
 surpriceCtx.append(...h1s)
 
 h1s[0].innerHTML = spanLetters('Happy Birthday')
-h1s[1].innerHTML = spanLetters('Moomen')
+h1s[1].innerHTML = spanLetters('Mechid')
 h1s[0].dataset.content = '🎊'
 h1s[1].dataset.contentBefore = '🎉'
 h1s[1].dataset.contentAfter = '🥳'

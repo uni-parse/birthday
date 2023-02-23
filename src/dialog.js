@@ -6,7 +6,7 @@ export { pendingDialog }
 const dialog = document.createElement('dialog')
 dialog.innerHTML = `
   <form method=dialog>
-    <h3>😎Hi mooomen✨</h3>
+    <h3>😎Hi mechid✨</h3>
     <p>I create for u a Gift🎁</p>
     <details>
       <summary>
