@@ -1,4 +1,4 @@
-export { sleep, whilePending, eventPromise }
+export { sleep, whilePending, eventPromise, spanLetters }
 
 function sleep(ms) {
   return new Promise(rs => setTimeout(rs, ms))
@@ -41,4 +41,11 @@ function eventPromise(target, event) {
   return new Promise(
     rs => target.addEventListener(event, rs, { once: true })
   )
+}
+
+function spanLetters(str) {
+  return [...str].reduce((spans, char) => char == ' '
+    ? spans + ' '
+    : spans + `<span>${char}</span>`
+    , '')
 }

@@ -20,12 +20,10 @@ $blur: 1.5px;
 $cyan: color.adjust(#f0f, $lightness: 6%, $hue: 25);
 $magenta: color.adjust(#0ff, $hue: 20);
 
-#surprise h1 {
+#surprise h1,
+.logo {
   position: relative;
-  bottom: 10vh;
   opacity: 1;
-  display: inline-block;
-  z-index: 1;
   color: #fffc;
   text-shadow: $offset1 $offset1 $blur $cyan,
     $offset2 $offset2 $blur $magenta;
@@ -42,7 +40,16 @@ $magenta: color.adjust(#0ff, $hue: 20);
   &:active {
     cursor: grabbing;
   }
+}
 
+.logo {
+  top: calc(50vh - 1em);
+}
+
+#surprise h1 {
+  bottom: 10vh;
+  display: inline-block;
+  z-index: 1;
   &:first-of-type {
     &::before,
     &::after {
@@ -60,18 +67,18 @@ $magenta: color.adjust(#0ff, $hue: 20);
   }
 }
 
-#surprise h1 span {
-  transition: font-size 0.6s ease-out, color 0.6s ease-out;
-
+#surprise h1 span,
+.logo span {
+  display: inline-block;//required by transform
+  transition: transform 0.6s ease-out, color 0.6s ease-out;
+  transition: scale(1);
   &:nth-child(2n):hover {
-    //font-weight: 900;
-    font-size: 1.2em;
+    transform: scale(1.2);
     color: $cyan;
   }
 
   &:nth-child(2n + 1):hover {
-    //font-weight: 900;
-    font-size: 1.2em;
+    transform: scale(1.2);
     color: $magenta;
   }
 }
@@ -86,6 +93,7 @@ $magenta: color.adjust(#0ff, $hue: 20);
     opacity: 0.7;
     text-shadow: $offset-1 $offset-1 $blur $cyan,
       $offset-2 $offset-2 $blur $magenta;
-    transform: rotate(-5deg) scale(1.25);
+    //transform: rotate(-5deg) scale(1.25);
+    transform: scale(1.25);
   }
 }
