@@ -46,7 +46,7 @@ async function showSurprise(ctx) {
 
   //  birthday shows up
   for (const h1 of h1s) {
-    h1.style.willChange = 'transform, opacity' //opt animation
+    h1.style.willChange = 'transform, opacity, text-shadow'
     h1.style.transform = 'scale(1)'
   }
   await sleep(transitionDuration - 150) //sync transition with animation

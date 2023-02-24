@@ -1,7 +1,7 @@
 export const audios = {}
 export { fetchIntro, fetchSurprise }
 
-import { eventPromise } from './utilities'
+import { sleep, eventPromise } from './utilities'
 
 import musicIntro from './assets/intro.mp3'
 import audioClick from './assets/click.wav'
@@ -15,54 +15,56 @@ import audioFireworks from './assets/fireworks.wav'
 
 import partyUrl from './assets/party.min.js?url'
 
-const delay = 0
-function fetchIntro() {
-  audios.click = fetchAudio(audioClick)
-  audios.true = fetchAudio(audioTrue)
-  audios.false = fetchAudio(audioFalse)
-  audios.success = fetchAudio(audioSuccess)
-
+function fetchIntro(delay = 0, promises = []) {
   audios.intro = new Audio(musicIntro)
   audios.intro.loop = true
 
-  const promises = [
-    new Promise(rs => setTimeout(rs, delay)),
-    //Promise.reject('error 404 from uniparse'),
+  const pending = new Map()
+    .set('click', fetchAudio(audioClick))
+    .set('true', fetchAudio(audioTrue))
+    .set('false', fetchAudio(audioFalse))
+    .set('success', fetchAudio(audioSuccess))
+
+  for (const entry of pending.entries())
+    promises.push(audioPromise(entry))
+
+  promises.push(
+    sleep(delay),
     eventPromise(window, 'load'),
-    eventPromise(audios.intro, 'canplaythrough'),
-  ]
-
-  for (const a in audios) if (a != 'intro')
-    promises.push((async () => audios[a] = await audios[a])())
-
+    eventPromise(audios.intro, 'canplaythrough')
+  )
   return promises
 }
 
-function fetchSurprise() {
-  audios.fireworks = fetchAudio(audioFireworks)
-  audios.boom = fetchAudio(audioBoom)
-
+function fetchSurprise(delay = 0, promises = []) {
   audios.birthday = new Audio(musicBirthday)
   audios.birthday.loop = true
+
+  const pending = new Map()
+    .set('boom', fetchAudio(audioBoom))
+    .set('fireworks', fetchAudio(audioFireworks))
+
+  for (const entry of pending.entries())
+    promises.push(audioPromise(entry))
 
   const script = document.createElement('script')
   script.async = true
   script.src = partyUrl
   document.head.append(script)
 
-  const promises = [
-    new Promise(rs => setTimeout(rs, delay)),
+  promises.push(
+    sleep(delay),
     eventPromise(script, 'load'),
     eventPromise(audios.birthday, 'canplaythrough')
-  ]
-
-  for (let a in audios) if ('boom fireworks'.includes(a))
-    promises.push((async () => audios[a] = await audios[a])())
-
+  )
   return promises
 }
 
 //helpers
+async function audioPromise([key, fetchPromise]) {
+  audios[key] = await fetchPromise
+}
+
 async function fetchAudio(url) {
   const
     ctx = new AudioContext(),

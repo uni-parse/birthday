@@ -36,4 +36,6 @@ body {
 main {
   min-height: 100vh;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }

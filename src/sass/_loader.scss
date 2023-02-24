@@ -1,9 +1,11 @@
 @use 'utilities' as *;
 @use 'sass:color';
 
+$size: clamp(3rem, 20vmin, 6rem);
+
+//colors
 $magenta: color.adjust(#f0f, $lightness: 6%, $hue: 25);
 $cyan: color.adjust(#0ff, $hue: 20);
-$size: 10vmin;
 
 .loaderCtx {
   //border: red solid;
@@ -19,6 +21,7 @@ $size: 10vmin;
   outline: solid $cyan calc($size * 0.05);
   box-shadow: 0 0 calc($size / 3) $cyan;
   border-radius: 50%;
+  cursor: wait;
   animation: loaderEllipseAnimation 2s linear infinite;
 }
 

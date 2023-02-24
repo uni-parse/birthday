@@ -17,13 +17,12 @@ async function pendingLoader(promises, ctx) {
   await whilePending(
     promises,
     async () => {
-      ctx.style.position = 'relative'
-      ctx.style.cursor = 'progress'
+      ctx.style.cursor = 'pointer'
       ctx.append(loaderCtx)
-      await sleep(0) //💡fix: transition on append
-      toPointListener(ctx)
+      await sleep(1) //💡fix: transition on append
       loaderCtx.style.transform = 'scale(1)'
       await sleep(transitionDuration)
+      toPointListener(ctx)
     },
     async () => {
       loaderCtx.style.transform = 'scale(0)'
