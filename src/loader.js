@@ -1,5 +1,5 @@
 export { pendingLoader }
-import { sleep, whilePending } from "./utilities"
+import { eventPromise, sleep, whilePending } from "./utilities"
 
 const loaderCtx = document.createElement('div')
 loaderCtx.className = 'loaderCtx'
@@ -35,8 +35,17 @@ async function pendingLoader(promises, ctx) {
 
 function toPointListener(ctx) {
   const { width, height } = loaderCtx.getBoundingClientRect()
-  ctx.addEventListener('click', e => {
+
+  ctx.addEventListener('mousedown', async e => {
+    handler(e)
+    ctx.addEventListener('mousemove', handler)
+    await eventPromise(ctx, 'mouseup')
+    ctx.removeEventListener('mousemove', handler)
+  })
+
+  function handler(e) {
     loaderCtx.style.left = (e.clientX - width / 2) + 'px'
     loaderCtx.style.top = (e.clientY - height / 2) + 'px'
-  })
+  }
 }
+
