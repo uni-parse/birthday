@@ -41,7 +41,7 @@ function getAdresses(icons) {
     const address = document.createElement('address')
 
     //append ...<a><svg> in <address>
-    const medias = user.urls.map(url => {
+    const anchors = user.urls.map(url => {
       const a = document.createElement('a')
       a.target = '_blank'
       a.href = url
@@ -59,7 +59,7 @@ function getAdresses(icons) {
 
       return a
     })
-    address.append(...medias)
+    address.append(...anchors)
 
     //append <img> in <address>
     const img = document.createElement('img')
@@ -67,72 +67,57 @@ function getAdresses(icons) {
     img.alt = user.name
     address.append(img)
 
-    //trash & cache
-    delete user.srcset
-    delete user.urls
-    user.img = img
-    user.address = address
-
+    user = null // trash
     return address
   })
 }
 
-function showMedias(delay = 5000) {
-  users.forEach(user => {
-    const { img, side, address } = user
-    img.style.bottom = '.3rem'
+function showMedias(delay = 2500) {
+  const adderesses = document.querySelectorAll('address')
+  adderesses.forEach(address => {
+    address.style.transform = 'translateY(-.3rem)' //show up img
+
+    let visible, timerId
 
     //toogle medias svgs visibility by clicking on img
-    let visible, timerId
+    const img = address.querySelector('img')
     img.addEventListener('click', () => {
-      const svgs = [...address.querySelectorAll('svg')]
-
-      //toggle show/hide svgs
       transition()
       visible = !visible
-
-      //hide svgs after delay, if not hover over it.
-      clearTimeout(timerId)
-      timer()
-      address.addEventListener('mouseover', async e => {
-        if (!svgs.includes(e.target)) return
-        clearTimeout(timerId)
-        console.log('hi')
-        await eventPromise(e.target, 'mouseout')
-        timer()
-        console.log('bye')
-      }, { once: false })
-
-
-      //helpers
-      function timer() {
-        timerId = setTimeout(() => {
-          if (!visible) return
-          transition()
-          visible = false
-        }, delay)
-      }
-
-      function transition() {
-        svgs.forEach((svg, i) => {
-          //transition configuration
-          const delay = 60 * (visible ? i : svgs.length - i)
-          const coordinates = visible
-            ? '.3, -.5,    1, 1'
-            : '0, 0,    .7, 1.5'
-
-          svg.style.transition =
-            `transform 500ms cubic-bezier(.215, .61, .355, 1),
-          ${side} 200ms ${delay}ms cubic-bezier(${coordinates})`
-
-          //toggle show/hide svgs
-          svg.style[side] = visible ? '' : '3rem'
-        })
-      }
     }, { once: false })
-  })
 
-  users = null // trash
+    //hide svgs after delay, if not hover over it.
+    address.addEventListener('mouseenter', async () => {
+      clearTimeout(timerId)
+      await eventPromise(address, 'mouseleave')
+
+      timerId = setTimeout(() => {
+        if (!visible) return
+        transition()
+        visible = false
+      }, delay)
+
+    }, { once: false })
+
+
+    //helpers
+    function transition() {
+      const anchors = [...address.querySelectorAll('a')]
+      anchors.forEach((a, i) => {
+        //transition configuration
+        const delay = 60 * (visible ? i : anchors.length - i)
+        const coordinates = visible
+          ? '.3, -1,    1, 1'
+          : '0, 0,    .7, 2'
+
+        a.style.transition = `transform 200ms ${delay}ms cubic-bezier(${coordinates})`
+
+        //toggle show/hide svgs
+        a.style.transform = visible ? '' : 'translateX(0)'
+      })
+    }
+
+  })
 }
 
 
