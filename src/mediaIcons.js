@@ -1,86 +1,144 @@
 export { attachMedias, showMedias }
 
+import { eventPromise, sleep } from './utilities'
+
 import iconsUrl from './assets/mediaIcons.json?url'
 import srcsetUniparse from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
 import srcsetMechid from './assets/mechid.jpg?w=66&format=avif;webp&srcset'
 
-const users = {
-  uniparse: { srcset: srcsetUniparse },
-  mechid: { srcset: srcsetMechid }
+let users = [
+  {
+    name: 'uniparse',
+    side: 'right',
+    srcset: srcsetUniparse,
+    urls: [
+      'https://youtube.com/channel/UCvNOch5x46MDaejgQ6SkzUg',
+      'https://facebook.com/UniParse',
+      'https://instagram.com/UniParse',
+      'https://linkedin.com/in/UniParse',
+      'https://github.com/TheUniParse',
+      'https://twitter.com/UniParse'
+    ]
+  }, {
+    name: 'mechid',
+    side: 'left',
+    srcset: srcsetMechid,
+    urls: [
+      'https://facebook.com/got.em.11',
+      'https://instagram.com/mohamed_mchid_hedjala',
+      'https://twitter.com/mohamedmh06'
+    ]
+  }
+]
+async function attachMedias(ctx) {
+  const icons = await fetchMedia()
+  //append <address> <a><svg></a>... <img> </address>
+  ctx.append(...getAdresses(icons))
 }
 
-async function attachMedias(ctx) {
-  const response = await fetch(iconsUrl)
-  const icons = await response.json()
-
-  users.uniparse.urls = [
-    'https://youtube.com/channel/UCvNOch5x46MDaejgQ6SkzUg',
-    'https://facebook.com/UniParse',
-    'https://instagram.com/UniParse',
-    'https://linkedin.com/in/UniParse',
-    'https://github.com/TheUniParse',
-    'https://twitter.com/UniParse'
-  ]
-
-  users.mechid.urls = [
-    'https://facebook.com/got.em.11',
-    'https://instagram.com/mohamed_mchid_hedjala',
-    'https://twitter.com/mohamedmh06'
-  ]
-
-  for (const user in users) {
+function getAdresses(icons) {
+  return users.map(user => {
     const address = document.createElement('address')
 
-    for (const url of users[user].urls) {
-      const svg = icons[url.slice(8, url.indexOf('.'))]
+    //append ...<a><svg> in <address>
+    const medias = user.urls.map(url => {
       const a = document.createElement('a')
       a.target = '_blank'
       a.href = url
-      a.innerHTML = svg
-      address.append(a)
-    }
 
+      const mediaName = url.slice(8, url.indexOf('.'))
+      const svg_html = icons[mediaName]
+      a.innerHTML = svg_html
+
+      //accessibility
+      const svg = a.querySelector('svg')
+      svg.role = 'img'
+      const title = document.createElement('title')
+      title.innerText = `${mediaName} of ${user.name}`
+      svg.prepend(title)
+
+      return a
+    })
+    address.append(...medias)
+
+    //append <img> in <address>
     const img = document.createElement('img')
-    img.srcset = users[user].srcset
-    img.alt = user
+    img.srcset = user.srcset
+    img.alt = user.name
     address.append(img)
 
-    const svgs = [...address.querySelectorAll('svg')]
-    svgs.forEach((svg, i) => svg.style.transition =
-      `all 500ms cubic-bezier(.215, .61, .355, 1),
-      right ${(svgs.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4),
-      left ${(svgs.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4)`
-    )
+    //trash & cache
+    delete user.srcset
+    delete user.urls
+    user.img = img
+    user.address = address
 
-    //trash
-    delete users[user].srcset
-    delete users[user].urls
-
-    //cache
-    users[user].img = img
-    users[user].svgs = svgs
-
-    ctx.append(address)
-  }
+    return address
+  })
 }
 
-function showMedias() {
-  users.uniparse.offsetX = 'right'
-  users.mechid.offsetX = 'left'
-
-  for (const user in users) {
-    const { img, svgs, offsetX } = users[user]
-    let visible
-
+function showMedias(delay = 5000) {
+  users.forEach(user => {
+    const { img, side, address } = user
     img.style.bottom = '.3rem'
-    img.addEventListener('click', () => {
-      visible = !visible
-      for (const svg of svgs)
-        svg.style[offsetX] = visible ? '2.8rem' : 0
-    }, { once: false })
-  }
 
-  //trash
-  delete users.uniparse
-  delete users.mechid
+    //toogle medias svgs visibility by clicking on img
+    let visible, timerId
+    img.addEventListener('click', () => {
+      const svgs = [...address.querySelectorAll('svg')]
+
+      //toggle show/hide svgs
+      transition()
+      visible = !visible
+
+      //hide svgs after delay, if not hover over it.
+      clearTimeout(timerId)
+      timer()
+      address.addEventListener('mouseover', async e => {
+        if (!svgs.includes(e.target)) return
+        clearTimeout(timerId)
+        console.log('hi')
+        await eventPromise(e.target, 'mouseout')
+        timer()
+        console.log('bye')
+      }, { once: false })
+
+
+      //helpers
+      function timer() {
+        timerId = setTimeout(() => {
+          if (!visible) return
+          transition()
+          visible = false
+        }, delay)
+      }
+
+      function transition() {
+        svgs.forEach((svg, i) => {
+          //transition configuration
+          const delay = 60 * (visible ? i : svgs.length - i)
+          const coordinates = visible
+            ? '.3, -.5,    1, 1'
+            : '0, 0,    .7, 1.5'
+
+          svg.style.transition =
+            `transform 500ms cubic-bezier(.215, .61, .355, 1),
+          ${side} 200ms ${delay}ms cubic-bezier(${coordinates})`
+
+          //toggle show/hide svgs
+          svg.style[side] = visible ? '' : '3rem'
+        })
+      }
+    }, { once: false })
+  })
+
+  users = null // trash
+}
+
+
+//helpers
+async function fetchMedia() {
+  const response = await fetch(iconsUrl)
+  const icons = await response.json()
+  return icons
 }

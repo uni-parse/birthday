@@ -1,3 +1,4 @@
+//normalize
 html {
   box-sizing: border-box;
 }
@@ -6,6 +7,7 @@ html {
 *:before {
   box-sizing: inherit;
 }
+
 html,
 body,
 div {
@@ -13,6 +15,12 @@ div {
   padding: 0;
   border: none;
 }
+
+img {
+  max-width: 100%;
+}
+
+//custom
 @font-face {
   font-family: 'Henny Penny';
   font-style: normal;
@@ -23,6 +31,7 @@ div {
     U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122,
     U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 body {
   color: #fff;
   background: radial-gradient(
