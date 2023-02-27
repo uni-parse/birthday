@@ -36,6 +36,55 @@ async function attachMedias(ctx) {
   ctx.append(...getAdresses(icons))
 }
 
+function showMedias(delay = 2500) {
+  const adderesses = document.querySelectorAll('address')
+  adderesses.forEach(address => {
+    address.style.transform = 'translateY(-.3rem)' //show up img
+
+    let visible, timerId
+
+    //toggle show/hide svgs on click on img
+    const img = address.querySelector('img')
+    img.addEventListener('click', transition)
+
+    //hide svgs after delay, if not hover over it.
+    address.addEventListener('mouseenter', async () => {
+      clearTimeout(timerId)
+      await eventPromise(address, 'mouseleave')
+      timerId = setTimeout(() => {
+        if (visible) transition()
+      }, delay)
+    }, { once: false })
+
+
+    //helpers
+    const anchors = [...address.querySelectorAll('a')]
+    function transition() {
+      anchors.forEach((a, i) => {
+        //transition configuration
+        const delay = 60 * (visible ? i : anchors.length - i)
+        const coordinates = visible
+          ? '.3, -1,      1, 1'
+          : ' 0,  0,     .7, 2'
+        a.style.transition = `transform 200ms ${delay}ms cubic-bezier(${coordinates})`
+
+        //toggle show/hide svgs
+        a.style.transform = visible ? '' : 'translateX(0)'
+      })
+
+      visible = !visible
+    }
+
+  })
+}
+
+//helpers
+async function fetchMedia() {
+  const response = await fetch(iconsUrl)
+  const icons = await response.json()
+  return icons
+}
+
 function getAdresses(icons) {
   return users.map(user => {
     const address = document.createElement('address')
@@ -70,60 +119,4 @@ function getAdresses(icons) {
     user = null // trash
     return address
   })
-}
-
-function showMedias(delay = 2500) {
-  const adderesses = document.querySelectorAll('address')
-  adderesses.forEach(address => {
-    address.style.transform = 'translateY(-.3rem)' //show up img
-
-    let visible, timerId
-
-    //toogle medias svgs visibility by clicking on img
-    const img = address.querySelector('img')
-    img.addEventListener('click', () => {
-      transition()
-      visible = !visible
-    }, { once: false })
-
-    //hide svgs after delay, if not hover over it.
-    address.addEventListener('mouseenter', async () => {
-      clearTimeout(timerId)
-      await eventPromise(address, 'mouseleave')
-
-      timerId = setTimeout(() => {
-        if (!visible) return
-        transition()
-        visible = false
-      }, delay)
-
-    }, { once: false })
-
-
-    //helpers
-    function transition() {
-      const anchors = [...address.querySelectorAll('a')]
-      anchors.forEach((a, i) => {
-        //transition configuration
-        const delay = 60 * (visible ? i : anchors.length - i)
-        const coordinates = visible
-          ? '.3, -1,    1, 1'
-          : '0, 0,    .7, 2'
-
-        a.style.transition = `transform 200ms ${delay}ms cubic-bezier(${coordinates})`
-
-        //toggle show/hide svgs
-        a.style.transform = visible ? '' : 'translateX(0)'
-      })
-    }
-
-  })
-}
-
-
-//helpers
-async function fetchMedia() {
-  const response = await fetch(iconsUrl)
-  const icons = await response.json()
-  return icons
 }
