@@ -1,6 +1,6 @@
 export { attachMedias, showMedias }
 
-import { eventPromise, sleep } from './utilities'
+import { eventPromise } from './utilities'
 
 import iconsUrl from './assets/mediaIcons.json?url'
 import srcsetUniparse from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
@@ -30,10 +30,12 @@ let users = [
     ]
   }
 ]
+
 async function attachMedias(ctx) {
-  const icons = await fetchMedia()
-  //append <address> <a><svg></a>... <img> </address>
+  const icons = await fetchMediaIcons()
   ctx.append(...getAdresses(icons))
+
+  await loadImgs(ctx)
 }
 
 function showMedias(delay = 2500) {
@@ -48,9 +50,9 @@ function showMedias(delay = 2500) {
     img.addEventListener('click', transition)
 
     //hide svgs after delay, if not hover over it.
-    address.addEventListener('mouseenter', async () => {
+    address.addEventListener('pointerenter', async () => {
       clearTimeout(timerId)
-      await eventPromise(address, 'mouseleave')
+      await eventPromise(address, 'pointerleave')
       timerId = setTimeout(() => {
         if (visible) transition()
       }, delay)
@@ -79,12 +81,6 @@ function showMedias(delay = 2500) {
 }
 
 //helpers
-async function fetchMedia() {
-  const response = await fetch(iconsUrl)
-  const icons = await response.json()
-  return icons
-}
-
 function getAdresses(icons) {
   return users.map(user => {
     const address = document.createElement('address')
@@ -114,9 +110,23 @@ function getAdresses(icons) {
     const img = document.createElement('img')
     img.srcset = user.srcset
     img.alt = user.name
+    img.className = 'userMedias'
     address.append(img)
 
     user = null // trash
     return address
   })
+}
+
+async function fetchMediaIcons() {
+  const response = await fetch(iconsUrl)
+  const icons = await response.json()
+  return icons
+}
+
+async function loadImgs(ctx) {
+  const imgs = ctx.querySelectorAll('img.userMedias')
+  const promises = [...imgs].map(img =>
+    eventPromise(img, 'load'))
+  await Promise.all(promises)
 }

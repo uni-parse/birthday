@@ -13,50 +13,44 @@ import musicBirthday from './assets/birthday.mp3'
 import audioBoom from './assets/boom.wav'
 import audioFireworks from './assets/fireworks.wav'
 
-import partyUrl from './assets/party.min.js?url'
+import partyJsUrl from './assets/party.min.js?url'
 
 function fetchIntro(delay = 0, promises = []) {
   audios.intro = new Audio(musicIntro)
   audios.intro.loop = true
+  promises.push(eventPromise(audios.intro, 'canplaythrough'))
 
-  const pending = new Map()
+  new Map()
     .set('click', fetchAudio(audioClick))
     .set('true', fetchAudio(audioTrue))
     .set('false', fetchAudio(audioFalse))
     .set('success', fetchAudio(audioSuccess))
+    .forEach((v, k) => promises.push(audioPromise([k, v])))
 
-  for (const entry of pending.entries())
-    promises.push(audioPromise(entry))
+  if (document.readyState != 'complete')
+    promises.push(eventPromise(window, 'load'))
 
-  promises.push(
-    sleep(delay),
-    eventPromise(window, 'load'),
-    eventPromise(audios.intro, 'canplaythrough')
-  )
+  promises.push(sleep(delay))
   return promises
 }
 
 function fetchSurprise(delay = 0, promises = []) {
   audios.birthday = new Audio(musicBirthday)
   audios.birthday.loop = true
+  promises.push(eventPromise(audios.birthday, 'canplaythrough'))
 
-  const pending = new Map()
+  new Map()
     .set('boom', fetchAudio(audioBoom))
     .set('fireworks', fetchAudio(audioFireworks))
+    .forEach((v, k) => promises.push(audioPromise([k, v])))
 
-  for (const entry of pending.entries())
-    promises.push(audioPromise(entry))
+  const script_party = document.createElement('script')
+  script_party.async = true
+  script_party.src = partyJsUrl
+  document.head.append(script_party)
+  promises.push(eventPromise(script_party, 'load'))
 
-  const script = document.createElement('script')
-  script.async = true
-  script.src = partyUrl
-  document.head.append(script)
-
-  promises.push(
-    sleep(delay),
-    eventPromise(script, 'load'),
-    eventPromise(audios.birthday, 'canplaythrough')
-  )
+  promises.push(sleep(delay))
   return promises
 }
 
