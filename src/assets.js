@@ -45,7 +45,6 @@ function fetchSurprise(delay = 0, promises = []) {
     .forEach((v, k) => promises.push(audioPromise([k, v])))
 
   const script_party = document.createElement('script')
-  script_party.async = true
   script_party.src = partyJsUrl
   document.head.append(script_party)
   promises.push(eventPromise(script_party, 'load'))
