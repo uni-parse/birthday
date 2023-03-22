@@ -60,7 +60,7 @@ function showMedias(delay = 2500) {
 
 
     //helpers
-    const anchors = [...address.querySelectorAll('a')]
+    const anchors = address.querySelectorAll('a')
     function transition() {
       anchors.forEach((a, i) => {
         //transition configuration
