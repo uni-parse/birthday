@@ -49,7 +49,7 @@ export function dialogListener(dialog) {
     date.removeEventListener('change', dateHandler)
 
     dateOutput.style.color = 'greenyellow'
-    dateOutput.innerHTML = '<br>Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>135</b> day!!'
+    dateOutput.innerHTML = '<br>Yes😁 <b>15<sup><small>th</small></sup> january ✓</b><br>you\'re younger than me by <b>165</b> day!!'
 
     date.replaceWith(dateOutput)
 
