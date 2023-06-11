@@ -1,7 +1,9 @@
-const cssnext = require('postcss-preset-env')
+import cssnext from 'postcss-preset-env'
+import tailwindcss from 'tailwindcss'
 
-module.exports = {
+export default {
   plugins: [
+    tailwindcss(),
     cssnext({
       stage: 1,//0experimental ~ 4stable 2d
       minimumVendorImplementations: 1,

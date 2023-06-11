@@ -1,10 +1,10 @@
+import { useState } from 'react'
 import { dialogListener } from './dialog_listener'
 import { sleep, eventPromise } from './utilities'
 
 export { pendingDialog }
 
 const dialog = document.createElement('dialog')
-
 
 const form = document.createElement('form')
 form.setAttribute('method', 'dialog')
@@ -23,8 +23,7 @@ const summary = document.createElement('summary')
 summary.innerText = 'but first, answer the questions:'
 details.append(summary)
 
-details.innerHTML+='<br>'
-
+details.innerHTML += '<br>'
 
 const selectLabel = document.createElement('label')
 selectLabel.innerHTML = 'which <em>year</em> our first meeting?'
@@ -42,7 +41,6 @@ select.append(emptyOption)
 const years = [2010, 2011, 2012, 2013, 2014, 2015, 2016]
 const options = years.map(year => new Option(year, year))
 select.append(...options)
-
 
 const dateLabel = document.createElement('label')
 dateLabel.innerHTML = '<br>which day I <em>born</em>?'
@@ -62,11 +60,6 @@ btn.innerText = 'locked'
 btn.dataset.lock = '🔒'
 btn.disabled = true
 details.append(btn)
-
-
-
-
-
 
 const transitionDuration = 500
 dialog.style.transition = `transform ${transitionDuration}ms`
@@ -88,4 +81,74 @@ async function pendingDialog(ctx) {
   await sleep(transitionDuration)
   dialog.close()
   dialog.remove()
+}
+
+export default function Dialog() {
+  return (
+    <dialog open>
+      <form method='dialog'>
+        <h3>😎Hi Uniparse✨</h3>
+        <p>We create for u a Gift🎁</p>
+        <Details />
+      </form>
+    </dialog>
+  )
+}
+
+function Details() {
+  const [meetingYear, setMeetingYear] = useState(null)
+  const [birthday, setBirthday] = useState(null)
+
+  return (
+    <details>
+      <summary>but first, answer the questions:</summary>
+      <br />
+
+      {meetingYear == 2014 ? (
+        <output>
+          Yes😁 <b>2014 ✓</b>
+          <br />
+          it's was awesome $
+          {new Date().getFullYear() - 2014 + ' '}
+          years of <b>friendship</b>!!
+        </output>
+      ) : (
+        <label>
+          which <em>year</em> our first meeting?
+          <select
+            required
+            defaultValue=''
+            onChange={e => setMeetingYear(e.target.value)}>
+            <option disabled hidden></option>
+            <option>2010</option>
+            <option>2011</option>
+            <option>2012</option>
+            <option>2013</option>
+            <option>2014</option>
+            <option>2015</option>
+            <option>2016</option>
+          </select>
+        </label>
+      )}
+      <br />
+      <br />
+
+      {
+        <label>
+          which day I <em>born</em>?
+          <input
+            type='date'
+            value='2000-01-29'
+            required
+            onChange={e => setBirthday(e.target.value)}
+          />
+        </label>
+      }
+      <br />
+
+      <button type='button' data-lock='🔒' disabled>
+        locked
+      </button>
+    </details>
+  )
 }
