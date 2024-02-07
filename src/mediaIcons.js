@@ -16,7 +16,7 @@ let users = [
       'https://facebook.com/UniParse',
       'https://instagram.com/UniParse',
       'https://linkedin.com/in/UniParse',
-      'https://github.com/TheUniParse',
+      'https://github.com/Uni-Parse',
       'https://twitter.com/UniParse'
     ]
   }, {
